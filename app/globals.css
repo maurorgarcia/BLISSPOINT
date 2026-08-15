@@ -188,6 +188,35 @@ a:hover {
   }
 }
 
+@keyframes pdScrollCue {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+.pd-scroll-cue {
+  transition: opacity var(--motion-duration-microfeedback) var(--motion-ease-ui);
+}
+
+.pd-scroll-cue:hover {
+  opacity: 1;
+}
+
+.pd-scroll-cue:hover .pd-scroll-circle {
+  border-color: var(--color-accent-primary);
+  background: rgba(245, 194, 66, 0.12);
+}
+
+.pd-scroll-cue:hover .pd-scroll-label {
+  color: var(--color-accent-primary);
+}
+
 @keyframes pdReveal {
   from {
     opacity: 0;

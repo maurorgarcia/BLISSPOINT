@@ -104,7 +104,7 @@ export function Hero({
       </div>
       <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", justifyContent: "center" }}>
         <Button variant="pedidosya" size="lg" onClick={onOpenPedidosYa}>
-          Pedir por PedidosYa
+          PedidosYa
         </Button>
         <Button variant="solidDark" size="lg" onClick={onGoMenu}>
           Ver el menú
@@ -112,23 +112,56 @@ export function Hero({
       </div>
       <div
         onClick={onGoMenu}
+        className="pd-scroll-cue"
         style={{
-          marginTop: "clamp(16px,4vh,40px)",
+          marginTop: "clamp(40px,10vh,88px)",
           cursor: "pointer",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 4,
-          color: "var(--color-offwhite-200)",
-          fontSize: "var(--text-xs)",
-          letterSpacing: "0.18em",
-          textTransform: "uppercase",
+          gap: 10,
+          opacity: 0.85,
         }}
       >
-        <span>Bajá</span>
-        <span style={{ fontSize: 28, lineHeight: 1, animation: "pdBob 1.8s ease-in-out infinite" }}>
-          ↓
+        <span
+          className="pd-scroll-label"
+          style={{
+            color: "var(--color-offwhite-200)",
+            fontSize: "var(--text-xs)",
+            fontWeight: 700,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            transition: "color var(--motion-duration-microfeedback) var(--motion-ease-ui)",
+          }}
+        >
+          Tu pancho te espera!
         </span>
+        <div
+          className="pd-scroll-circle"
+          style={{
+            width: 36,
+            height: 36,
+            borderRadius: "50%",
+            border: "1.5px solid var(--color-accent-primary)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backdropFilter: "blur(4px)",
+            transition:
+              "border-color var(--motion-duration-microfeedback) var(--motion-ease-ui), background var(--motion-duration-microfeedback) var(--motion-ease-ui)",
+            animation: "pdScrollCue 1.8s ease-in-out infinite",
+          }}
+        >
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="none" aria-hidden="true">
+            <path
+              d="M1 1L8 8L15 1"
+              stroke="var(--color-accent-primary)"
+              strokeWidth="2.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
       </div>
     </header>
   );
