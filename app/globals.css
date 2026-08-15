@@ -269,36 +269,41 @@ a:hover {
   }
 }
 
-/* 2) Toppings: grid normal en desktop, carrusel de a 4 en mobile/tablet */
-.pd-toppings-grid-desktop {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--space-gap-grid);
+/* 2) Toppings: carrusel de a 4 en mobile/tablet (swipe), de a 8 en
+   desktop (arrastre con mouse) */
+.pd-toppings-carousel-desktop {
+  display: none;
+}
+
+@media (min-width: 1025px) {
+  .pd-toppings-carousel-desktop {
+    display: block;
+  }
 }
 
 .pd-toppings-carousel {
   display: none;
 }
-
 @media (max-width: 1024px) {
-  .pd-toppings-grid-desktop {
-    display: none;
-  }
   .pd-toppings-carousel {
     display: block;
   }
 }
 
-.pd-toppings-track {
+.pd-toppings-track,
+.pd-toppings-track-desktop {
   display: flex;
   overflow-x: auto;
-  scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
-.pd-toppings-track::-webkit-scrollbar {
+.pd-toppings-track::-webkit-scrollbar,
+.pd-toppings-track-desktop::-webkit-scrollbar {
   display: none;
+}
+
+.pd-toppings-track {
+  scroll-snap-type: x mandatory;
 }
 
 .pd-toppings-page {
@@ -315,6 +320,29 @@ a:hover {
   .pd-toppings-page {
     grid-template-columns: repeat(4, 1fr);
   }
+}
+
+.pd-toppings-track-desktop {
+  scroll-snap-type: x proximity;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.pd-toppings-track-desktop.pd-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+.pd-toppings-track-desktop img {
+  -webkit-user-drag: none;
+}
+
+.pd-toppings-page-desktop {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  display: flex;
+  justify-content: center;
+  gap: var(--space-gap-grid);
+  padding: 0 var(--space-1);
 }
 
 .pd-toppings-dots {
