@@ -14,17 +14,7 @@ export function Mascota({ onGoSucursales }: { onGoSucursales: () => void }) {
         overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          maxWidth: 1280,
-          margin: "0 auto",
-          display: "grid",
-          gridTemplateColumns: "minmax(180px,1fr) minmax(280px,1.4fr) minmax(180px,1fr)",
-          alignItems: "center",
-          justifyItems: "center",
-          gap: "var(--space-6)",
-        }}
-      >
+      <div className="pd-mascota-grid">
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           <img
             src="/assets/brand/logo.png"

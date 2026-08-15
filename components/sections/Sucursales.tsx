@@ -10,15 +10,23 @@ export function Sucursales() {
       <div style={{ maxWidth: 1150, margin: "0 auto" }}>
         <div
           style={{
+            textAlign: "center",
             fontFamily: "var(--font-display)",
             fontSize: "var(--text-section-headline)",
             color: "var(--color-text-primary)",
             lineHeight: 1,
           }}
         >
-          DÓNDE COMER UN DOTO
+          ENCONTRÁ TU DOTO MÁS CERCA
         </div>
-        <p style={{ margin: "var(--space-2) 0 var(--space-10) 0", color: "var(--color-text-secondary)", fontSize: "var(--text-lg)" }}>
+        <p
+          style={{
+            textAlign: "center",
+            margin: "var(--space-2) auto var(--space-10)",
+            color: "var(--color-text-secondary)",
+            fontSize: "var(--text-lg)",
+          }}
+        >
           Tres puntos y un foodtruck que va a donde lo llames.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(270px,1fr))", gap: "var(--space-gap-grid)" }}>

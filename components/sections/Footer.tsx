@@ -10,6 +10,7 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
       }}
     >
       <div
+        className="pd-footer-grid"
         style={{
           maxWidth: 1150,
           margin: "0 auto",
@@ -19,13 +20,13 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
           alignItems: "start",
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
+        <div className="pd-footer-col" style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
           <img src="/assets/brand/logo.png" alt="Pancho Doto" style={{ width: 110, height: "auto" }} />
           <div style={{ fontFamily: "var(--font-playful)", color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", maxWidth: "26ch" }}>
             Los panchos del barrio, desde 1999.
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+        <div className="pd-footer-col" style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", color: "var(--color-accent-primary)" }}>
             HORARIOS
           </div>
@@ -37,7 +38,7 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
             Dom 18 a 24hs
           </div>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+        <div className="pd-footer-col" style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", color: "var(--color-accent-primary)" }}>
             CONTACTO
           </div>
@@ -48,7 +49,7 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
             @panchodotosan_nicolas
           </a>
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
+        <div className="pd-footer-col" style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
           <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", color: "var(--color-accent-primary)" }}>
             PEDÍ AHORA
           </div>
@@ -58,6 +59,7 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
         </div>
       </div>
       <div
+        className="pd-footer-bottom"
         style={{
           maxWidth: 1150,
           margin: "var(--space-10) auto 0",
