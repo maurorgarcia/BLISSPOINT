@@ -261,11 +261,8 @@ a:hover {
   .pd-order-image {
     order: 3;
   }
-  .pd-order-price {
-    order: 4;
-  }
   .pd-order-button {
-    order: 5;
+    order: 4;
   }
 }
 

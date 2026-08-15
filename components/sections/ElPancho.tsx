@@ -168,33 +168,6 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
             Pan, salchicha y hasta 4 toppings de la barra. Vos elegís todo, nosotros lo armamos al
             toque.
           </p>
-          <div
-            className="pd-order-price"
-            style={{ display: "flex", alignItems: "center", gap: "var(--space-5)", flexWrap: "wrap" }}
-          >
-            <div
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-6xl)",
-                lineHeight: 1,
-                color: "var(--color-accent-primary)",
-                textShadow: "0 10px 24px rgba(15,5,6,0.6)",
-              }}
-            >
-              $3.200
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-playful)",
-                fontSize: "var(--text-sm)",
-                color: "var(--color-text-secondary)",
-                maxWidth: "14ch",
-                lineHeight: 1.2,
-              }}
-            >
-              precio del pancho base
-            </div>
-          </div>
           <div className="pd-order-button">
             <Button variant="primary" size="lg" onClick={onGoToppings}>
               Rellenalo como quieras ↓
@@ -209,9 +182,46 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
               position: "relative",
               display: "flex",
               justifyContent: "center",
+              paddingTop: "var(--space-8)",
               transition: "transform 0.3s cubic-bezier(.22,1,.36,1)",
             }}
           >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "50%",
+                transform: "translate(-50%, -20%)",
+                zIndex: 2,
+                background: "var(--color-accent-primary)",
+                color: "var(--color-text-on-accent)",
+                borderRadius: "var(--radius-card)",
+                padding: "var(--space-3) var(--space-6)",
+                boxShadow: "0 14px 28px rgba(15,5,6,0.5)",
+                textAlign: "center",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-5xl)",
+                  lineHeight: 1,
+                }}
+              >
+                $3.200
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-playful)",
+                  fontSize: "var(--text-xs)",
+                  lineHeight: 1.2,
+                  marginTop: 2,
+                }}
+              >
+                precio del pancho base
+              </div>
+            </div>
             <img
               src="/assets/products/pancho-clasico.webp"
               alt="Pancho Doto armado"
