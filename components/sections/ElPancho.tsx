@@ -92,29 +92,31 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           }}
         />
         <img
-          data-parallax="1.2"
-          src="/assets/products/cono-papas.webp"
+          data-parallax="1.0"
+          src="/assets/products/pancho-clasico.webp"
           alt=""
           style={{
             position: "absolute",
-            left: "21%",
-            top: "56%",
-            width: 110,
-            opacity: 0.5,
-            transition: "transform 0.35s cubic-bezier(.22,1,.36,1)",
+            left: "14%",
+            top: "42%",
+            width: 100,
+            opacity: 0.32,
+            filter: "blur(1px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
           }}
         />
         <img
-          data-parallax="1.4"
-          src="/assets/toppings/mayonesas.png"
+          data-parallax="1.2"
+          src="/assets/products/pancho-chili.webp"
           alt=""
           style={{
             position: "absolute",
-            right: "19%",
-            top: "6%",
-            width: 120,
-            opacity: 0.45,
-            transition: "transform 0.35s cubic-bezier(.22,1,.36,1)",
+            right: "12%",
+            top: "48%",
+            width: 130,
+            opacity: 0.3,
+            filter: "blur(1px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
           }}
         />
       </div>
