@@ -101,6 +101,12 @@ export function Sucursales() {
                 <i className="ph-fill ph-clock" style={{ color: "var(--color-accent-secondary)", fontSize: 16, marginTop: 2, flexShrink: 0 }} />
                 {loc.hours}
               </div>
+              {loc.note ? (
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529", opacity: 0.75 }}>
+                  <i className="ph-fill ph-moped" style={{ color: "var(--color-accent-secondary)", fontSize: 16, marginTop: 2, flexShrink: 0 }} />
+                  {loc.note}
+                </div>
+              ) : null}
               <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginTop: "var(--space-2)" }}>
                 <a
                   href={loc.whatsapp}

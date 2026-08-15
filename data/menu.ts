@@ -20,6 +20,7 @@ export type Location = {
   whatsapp: string;
   maps: string;
   embed: string;
+  note?: string;
 };
 
 // Precios y datos marcados "a confirmar" son placeholders del brief original.
@@ -134,13 +135,13 @@ export const LOCATIONS: Location[] = [
     embed: embed("Bartolomé Mitre 337, San Nicolás de los Arroyos, Buenos Aires"),
   },
   {
-    // Dirección y horarios de Villa Constitución a confirmar con el cliente.
     city: "Villa Constitución",
-    address: "Dirección a confirmar",
-    hours: "Horarios a confirmar con el local",
-    whatsapp: "https://wa.me/5493364000000",
-    maps: "https://maps.google.com/?q=Villa+Constitución",
-    embed: embed("Villa Constitución, Santa Fe"),
+    address: "Av. San Martín 739",
+    hours: "Lun a Jue 18 a 24hs · Vie a Dom 18 a 7hs",
+    whatsapp: "https://wa.link/h4f5w7",
+    maps: "https://maps.google.com/?q=Av.+San+Martín+739+Villa+Constitución",
+    embed: embed("Av. San Martín 739, Villa Constitución, Santa Fe"),
+    note: "Foodtruck para eventos · Envíos por @yendoapp",
   },
 ];
 
