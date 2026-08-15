@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<!-- @template name="Menú Digital" description="Menú digital PanchoDoto: hero en video, pancho armable, toppings, combos, mascota, sucursales" -->
+<helmet><script src="./ds-base.js"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"><style>
+@keyframes pdFloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-18px) rotate(calc(var(--r,0deg) + 3deg))}}
+@keyframes pdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pdReveal{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none !important}}
+body{margin:0}
+a{color:var(--color-accent-primary);text-decoration:none}
+a:hover{color:var(--color-accent-primary-hover)}
+</style></helmet>
+<div style="background:var(--color-bg-base);font-family:var(--font-ui);overflow-x:clip">
+
+<header data-screen-label="Hero" style="position:relative;height:100dvh;max-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.2vh,24px);padding:clamp(16px,4vh,48px) var(--space-4);text-align:center;isolation:isolate;overflow:hidden">
+<video ref="{{ videoRef }}" src="assets/video/hero.mp4" autoPlay="{{ true }}" muted="{{ true }}" loop="{{ true }}" playsInline="{{ true }}" preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2"></video>
+<div style="position:absolute;inset:0;z-index:-1;background:radial-gradient(120% 80% at 50% 40%,rgba(31,10,12,0.55),rgba(31,10,12,0.92) 75%),linear-gradient(180deg,rgba(139,26,38,0.35),rgba(31,10,12,0.9))"></div>
+<img src="assets/brand/logo.png" alt="Pancho Doto" style="width:min(320px,58vw,32vh);height:auto;flex-shrink:1;min-height:0;object-fit:contain;filter:drop-shadow(0 24px 40px rgba(15,5,6,0.7));animation:pdBob 6s ease-in-out infinite">
+<div style="font-family:var(--font-playful);font-size:var(--text-xl);color:var(--color-offwhite-50);max-width:34ch;line-height:var(--leading-snug)">Panchos gourmet desde 1999. Armalo como se te cante.</div>
+<div style="display:flex;gap:var(--space-3);flex-wrap:wrap;justify-content:center">
+<x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.Button" variant="pedidosya" size="lg" onClick="{{ openPedidosYa }}" hint-size="200px,56px">Pedir por PedidosYa</x-import>
+<x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.Button" variant="solidDark" size="lg" onClick="{{ goMenu }}" hint-size="160px,56px">Ver el menú</x-import>
+</div>
+<div onClick="{{ goMenu }}" style="margin-top:clamp(16px,4vh,40px);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--color-offwhite-200);font-size:var(--text-xs);letter-spacing:0.18em;text-transform:uppercase">
+<span>Bajá</span>
+<span style="font-size:28px;line-height:1;animation:pdBob 1.8s ease-in-out infinite">↓</span>
+</div>
+</header>
+
+<div style="position:sticky;top:0;z-index:var(--z-nav-sticky);background:rgba(31,10,12,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--color-border-subtle)">
+<x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.TabNav" tabs="{{ tabs }}" active="{{ activeTab }}" onChange="{{ goSection }}" hint-size="100%,72px"></x-import>
+</div>
+
+<section id="sec-pancho" data-screen-label="El pancho" style="position:relative;padding:var(--space-24) var(--space-4);background:var(--color-bg-base);overflow:hidden;isolation:isolate">
+<div style="position:absolute;inset:0;z-index:-2;background-image:url(assets/backgrounds/graffiti-3.png);background-size:cover;background-position:center;opacity:0.14"></div>
+<div style="position:absolute;inset:0;z-index:-1;background:radial-gradient(70% 55% at 50% 45%,rgba(139,26,38,0.45),transparent 70%)"></div>
+<div style="position:absolute;inset:0;pointer-events:none">
+<img data-parallax="0.4" src="assets/products/pancho-chili.webp" alt="" style="position:absolute;left:4%;top:12%;width:120px;opacity:0.28;filter:blur(2px);transition:transform 0.5s cubic-bezier(.22,1,.36,1)">
+<img data-parallax="0.5" src="assets/products/pancho-clasico.webp" alt="" style="position:absolute;right:6%;top:16%;width:140px;opacity:0.3;filter:blur(2px);transition:transform 0.5s cubic-bezier(.22,1,.36,1)">
+<img data-parallax="0.7" src="assets/products/pancho-clasico.webp" alt="" style="position:absolute;left:9%;bottom:10%;width:170px;opacity:0.4;filter:blur(1px);transition:transform 0.45s cubic-bezier(.22,1,.36,1)">
+<img data-parallax="0.85" src="assets/products/pancho-chili.webp" alt="" style="position:absolute;right:8%;bottom:6%;width:190px;opacity:0.42;filter:blur(1px);transition:transform 0.45s cubic-bezier(.22,1,.36,1)">
+<img data-parallax="1.2" src="assets/products/cono-papas.webp" alt="" style="position:absolute;left:21%;top:56%;width:110px;opacity:0.5;transition:transform 0.35s cubic-bezier(.22,1,.36,1)">
+<img data-parallax="1.4" src="assets/toppings/mayonesas.png" alt="" style="position:absolute;right:19%;top:6%;width:120px;opacity:0.45;transition:transform 0.35s cubic-bezier(.22,1,.36,1)">
+</div>
+<div style="max-width:1150px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:center;gap:var(--space-10);position:relative">
+<div data-parallax="0.25" style="display:flex;flex-direction:column;gap:var(--space-5);transition:transform 0.6s cubic-bezier(.22,1,.36,1)">
+<div style="font-family:var(--font-display);font-size:var(--text-hero-headline);line-height:0.95;color:var(--color-text-primary);text-wrap:balance">ARMÁ TU PANCHO<br><span style="color:var(--color-accent-primary)">COMO QUIERAS</span></div>
+<p style="margin:0;max-width:36ch;color:var(--color-text-secondary);font-size:var(--text-lg);line-height:var(--leading-relaxed);text-wrap:pretty">Pan, salchicha y hasta 4 toppings de la barra. Vos elegís todo, nosotros lo armamos al toque.</p>
+<div style="display:flex;align-items:center;gap:var(--space-5);flex-wrap:wrap">
+<div style="font-family:var(--font-display);font-size:var(--text-6xl);line-height:1;color:var(--color-accent-primary);text-shadow:0 10px 24px rgba(15,5,6,0.6)">$3.200</div>
+<div style="font-family:var(--font-playful);font-size:var(--text-sm);color:var(--color-text-secondary);max-width:14ch;line-height:1.2">precio del pancho base</div>
+</div>
+<div><x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.Button" variant="primary" size="lg" onClick="{{ goToppings }}" hint-size="220px,56px">Rellenalo como quieras ↓</x-import></div>
+</div>
+<div data-parallax="1.6" style="position:relative;display:flex;justify-content:center;transition:transform 0.3s cubic-bezier(.22,1,.36,1)">
+<img src="assets/products/pancho-clasico.webp" alt="Pancho Doto armado" style="width:min(520px,84vw);height:auto;animation:pdBob 5s ease-in-out infinite;filter:drop-shadow(0 40px 34px rgba(15,5,6,0.75))">
+</div>
+</div>
+</section>
+
+<section id="sec-toppings" data-screen-label="Toppings" style="padding:var(--space-24) var(--space-4);background:var(--color-bg-product-block);position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;background-image:url(assets/backgrounds/hero-banner.png);background-size:cover;background-position:center;opacity:0.22"></div>
+<div style="position:absolute;inset:0;background:radial-gradient(80% 60% at 50% 0%,rgba(139,26,38,0.5),transparent 70%),linear-gradient(180deg,rgba(43,9,0,0.65),rgba(43,9,0,0.9))"></div>
+<div style="max-width:1150px;margin:0 auto;position:relative">
+<div style="text-align:center;margin-bottom:var(--space-10);animation:pdReveal .7s both;animation-timeline:view();animation-range:entry 0% cover 25%">
+<div style="font-family:var(--font-playful);font-size:var(--text-base);color:var(--color-accent-primary);letter-spacing:0.04em">Hasta 4 por pancho</div>
+<div style="font-family:var(--font-display);font-size:var(--text-section-headline);color:var(--color-text-primary);line-height:1;margin-top:var(--space-1)">TOPPINGS</div>
+<p style="margin:var(--space-2) auto 0;color:var(--color-text-secondary);font-size:var(--text-lg);max-width:46ch;text-wrap:pretty">Lo que le tires arriba define tu pancho. Estos son todos los que tenemos en la barra.</p>
+</div>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-gap-grid)">
+<sc-for list="{{ toppingsOnly }}" as="t" hint-placeholder-count="6">
+<div style="width:170px;background:var(--color-bg-surface);border:1px solid var(--color-border-subtle);border-radius:var(--radius-card);padding:var(--space-3);display:flex;flex-direction:column;gap:var(--space-2);align-items:center;text-align:center;box-shadow:0 10px 20px rgba(15,5,6,0.35);transition:transform .22s cubic-bezier(.22,1,.36,1),border-color .22s ease,box-shadow .22s ease" style-hover="transform:scale(1.04);border-color:var(--color-accent-primary);box-shadow:0 18px 30px rgba(15,5,6,0.55)">
+<div style="width:100%;height:130px;flex:0 0 130px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+<img src="{{ t.image }}" alt="{{ t.name }}" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 12px 14px rgba(15,5,6,0.6))">
+</div>
+<div style="font-family:var(--font-ui);font-weight:700;font-size:var(--text-sm);color:var(--color-text-primary);line-height:1.2">{{ t.name }}</div>
+<div style="font-family:var(--font-display);font-size:var(--text-sm);color:var(--color-accent-primary);letter-spacing:0.04em">{{ t.price }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="sec-barra" data-screen-label="La barra" style="padding:var(--space-24) var(--space-4);background:var(--color-bg-base);position:relative;overflow:hidden">
+<div style="max-width:1150px;margin:0 auto;position:relative">
+<div style="display:flex;align-items:center;justify-content:center;gap:var(--space-6);flex-wrap:wrap;text-align:center;animation:pdReveal 0.7s both;animation-timeline:view();animation-range:entry 0% cover 25%">
+<div style="min-width:260px">
+<div style="font-family:var(--font-playful);font-size:var(--text-base);color:var(--color-accent-primary);letter-spacing:0.04em;margin-bottom:var(--space-1)">Elegí la base</div>
+<div style="font-family:var(--font-display);font-size:var(--text-section-headline);color:var(--color-text-primary);line-height:1">LA BARRA</div>
+<p style="margin:var(--space-2) 0 0 0;color:var(--color-text-secondary);font-size:var(--text-lg);max-width:44ch;margin-left:auto;margin-right:auto;text-wrap:pretty">Pan, salchicha, salsas y extras para completar tu pancho.</p>
+</div>
+</div>
+<div style="display:flex;gap:var(--space-2);flex-wrap:wrap;justify-content:center;margin:var(--space-8) 0">
+<sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+<button onClick="{{ c.select }}" style="{{ c.style }}">{{ c.name }}</button>
+</sc-for>
+</div>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:var(--space-gap-grid)">
+<sc-for list="{{ catItems }}" as="it" hint-placeholder-count="6">
+<div style="width:170px;background:var(--color-bg-surface);border:1px solid var(--color-border-subtle);border-radius:var(--radius-card);padding:var(--space-3);display:flex;flex-direction:column;gap:var(--space-2);align-items:center;text-align:center;box-shadow:0 10px 20px rgba(15,5,6,0.35);transition:transform 0.22s cubic-bezier(.22,1,.36,1),border-color 0.22s ease,box-shadow 0.22s ease" style-hover="transform:scale(1.04);border-color:var(--color-accent-primary);box-shadow:0 18px 30px rgba(15,5,6,0.55)">
+<div style="width:100%;height:130px;flex:0 0 130px;display:flex;align-items:center;justify-content:center;overflow:hidden">
+<img src="{{ it.image }}" alt="{{ it.name }}" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 12px 14px rgba(15,5,6,0.6))">
+</div>
+<div style="font-family:var(--font-ui);font-weight:700;font-size:var(--text-sm);color:var(--color-text-primary);line-height:1.2">{{ it.name }}</div>
+<div style="font-family:var(--font-display);font-size:var(--text-sm);color:var(--color-accent-primary);letter-spacing:0.04em">{{ it.price }}</div>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<section id="sec-combos" data-screen-label="Combos" style="padding:var(--space-24) var(--space-4);background:var(--color-bg-base);position:relative;overflow:hidden">
+<div style="position:absolute;inset:0;z-index:0;background-image:url(assets/backgrounds/hero-banner.png);background-size:cover;background-position:center;opacity:0.08"></div>
+<div style="max-width:1150px;margin:0 auto;position:relative;z-index:1">
+<div style="text-align:center;margin-bottom:var(--space-10)">
+<div style="font-family:var(--font-display);font-size:var(--text-section-headline);color:var(--color-text-primary);line-height:1.1">COMBOS DE LA CASA</div>
+<p style="margin:var(--space-3) auto 0;color:var(--color-text-secondary);font-size:var(--text-lg)">Los que más salen, ya armados.</p>
+</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--space-6)">
+<sc-for list="{{ combos }}" as="c" hint-placeholder-count="4">
+<div style="position:relative;display:flex;flex-direction:column;background:linear-gradient(170deg,var(--color-bordeaux-700) 0%,var(--color-neutral-800) 46%,var(--color-nearblack-950) 100%);border:1px solid var(--color-border-subtle);border-radius:var(--radius-card);padding:var(--space-6) var(--space-5) var(--space-5);box-shadow:0 20px 40px rgba(15,5,6,0.55);transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s ease,border-color .28s ease;animation:pdReveal .7s both;animation-timeline:view();animation-range:entry 0% cover 22%" style-hover="transform:translateY(-10px) scale(1.02);box-shadow:0 34px 60px rgba(15,5,6,0.72);border-color:var(--color-accent-primary)">
+<div style="position:absolute;top:14px;left:-6px;background:var(--color-accent-primary);color:var(--color-text-on-accent);font-family:var(--font-playful);font-size:var(--text-xs);letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap;line-height:1;padding:7px 14px;border-radius:0 var(--radius-full) var(--radius-full) 0;box-shadow:0 8px 16px rgba(15,5,6,0.5);z-index:2">{{ c.tag }}</div>
+<div style="position:relative;width:100%;height:210px;flex:0 0 210px;display:flex;align-items:center;justify-content:center;margin-bottom:var(--space-4)">
+<div style="position:absolute;width:78%;height:78%;border-radius:50%;background:radial-gradient(circle,rgba(245,194,66,0.28),transparent 68%)"></div>
+<img src="{{ c.image }}" alt="{{ c.title }}" style="position:relative;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 30px 26px rgba(15,5,6,0.85))">
+</div>
+<div style="font-family:var(--font-display);font-size:var(--text-3xl);color:var(--color-text-primary);line-height:1;letter-spacing:0.01em">{{ c.title }}</div>
+<div style="color:var(--color-text-secondary);font-size:var(--text-sm);line-height:var(--leading-snug);margin-top:var(--space-2);flex:1">{{ c.desc }}</div>
+<div style="display:flex;align-items:baseline;gap:var(--space-2);margin-top:var(--space-4)">
+<div style="font-family:var(--font-display);font-size:var(--text-5xl);line-height:0.9;color:var(--color-accent-primary);text-shadow:0 8px 18px rgba(15,5,6,0.6)">{{ c.price }}</div>
+<div style="font-family:var(--font-playful);font-size:var(--text-xs);color:var(--color-text-secondary)">{{ c.note }}</div>
+</div>
+<button onClick="{{ openPedidosYa }}" style="margin-top:var(--space-4);width:100%;background:var(--color-accent-primary);color:var(--color-text-on-accent);font-family:var(--font-ui);font-weight:700;font-size:var(--text-base);border:none;padding:14px 20px;border-radius:var(--radius-full);cursor:pointer;transition:background .2s ease,transform .15s ease" style-hover="background:var(--color-accent-primary-hover)" style-active="transform:scale(0.98)">Pedir este combo</button>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;justify-content:center;margin-top:var(--space-10)">
+<x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.Button" variant="pedidosya" size="lg" onClick="{{ openPedidosYa }}" hint-size="220px,56px">Pedir por PedidosYa</x-import>
+</div>
+</div>
+</section>
+
+<section id="sec-mascota" data-screen-label="Mascota" style="padding:var(--space-6) var(--space-4);background:linear-gradient(160deg,var(--color-bordeaux-700),var(--color-bordeaux-800) 60%,var(--color-nearblack-950));position:relative;overflow:hidden">
+<div style="max-width:1280px;margin:0 auto;display:grid;grid-template-columns:minmax(180px,1fr) minmax(280px,1.4fr) minmax(180px,1fr);align-items:center;justify-items:center;gap:var(--space-6)">
+<div style="display:flex;justify-content:center;align-items:center">
+<img src="assets/brand/logo.png" alt="Pancho Doto" style="height:min(320px,36vw);width:auto;max-width:100%;object-fit:contain;animation:pdBob 5s ease-in-out infinite;filter:drop-shadow(0 40px 36px rgba(15,5,6,0.8))">
+</div>
+<div style="display:flex;flex-direction:column;gap:var(--space-4);text-align:center;align-items:center">
+<div style="font-family:var(--font-playful);font-size:var(--text-lg);color:var(--color-accent-primary);letter-spacing:0.04em">Hola, soy el Doto</div>
+<div style="font-family:var(--font-display);font-size:var(--text-section-headline);color:#fff;line-height:1;text-wrap:balance">DESDE 1999 HACIENDO<br>LOS PANCHOS DEL BARRIO</div>
+<p style="margin:0;color:rgba(255,255,255,0.82);font-size:var(--text-lg);line-height:var(--leading-relaxed);max-width:42ch;text-wrap:pretty">Arrancamos con un carrito y una parrilla en San Nicolás. Hoy somos dos locales, un foodtruck y una barra de salsas que te va a hacer perder la cabeza.</p>
+<div style="display:flex;gap:var(--space-3);flex-wrap:wrap;justify-content:center">
+<x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.Button" variant="primary" onClick="{{ goSucursales }}" hint-size="180px,48px">Dónde encontrarnos</x-import>
+<a href="https://instagram.com/panchodotosan_nicolas" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:10px;background:linear-gradient(45deg,#F58529,#DD2A7B 55%,#8134AF 100%);color:#fff;font-family:var(--font-ui);font-weight:700;font-size:var(--text-base);padding:12px 24px;border-radius:var(--radius-full);box-shadow:0 12px 24px rgba(15,5,6,0.5);transition:transform .15s ease" style-hover="transform:scale(1.02)" style-active="transform:scale(0.98)"><i class="ph-fill ph-instagram-logo" style="font-size:20px"></i>@panchodotosan_nicolas</a>
+</div>
+</div>
+<div style="display:flex;justify-content:center;align-items:center">
+<img src="assets/mascot/mascot-eating-trim.png" alt="Mascota de Pancho Doto comiendo" style="height:min(320px,36vw);width:auto;max-width:100%;object-fit:contain;transform:scaleX(-1);animation:pdBob 5.8s ease-in-out infinite;filter:drop-shadow(0 40px 36px rgba(15,5,6,0.8))">
+</div>
+</div>
+</section>
+
+<section id="sec-sucursales" data-screen-label="Sucursales" style="padding:var(--space-24) var(--space-4);background:var(--color-bg-product-block)">
+<div style="max-width:1150px;margin:0 auto">
+<div style="font-family:var(--font-display);font-size:var(--text-section-headline);color:var(--color-text-primary);line-height:1">DÓNDE COMER UN DOTO</div>
+<p style="margin:var(--space-2) 0 var(--space-10) 0;color:var(--color-text-secondary);font-size:var(--text-lg)">Tres puntos y un foodtruck que va a donde lo llames.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:var(--space-gap-grid)">
+<sc-for list="{{ locations }}" as="loc" hint-placeholder-count="3">
+<div style="background:var(--color-bg-panel);color:var(--color-text-on-panel);border-radius:var(--radius-card);padding:var(--space-6);display:flex;flex-direction:column;gap:var(--space-3);box-shadow:0 18px 32px rgba(15,5,6,0.5);transition:transform .25s cubic-bezier(.22,1,.36,1);animation:pdReveal .7s both;animation-timeline:view();animation-range:entry 0% cover 22%" style-hover="transform:translateY(-6px)">
+<iframe src="{{ loc.embed }}" title="Mapa {{ loc.address }}" loading="lazy" style="width:100%;height:150px;border:0;border-radius:var(--radius-sm);filter:saturate(0.9)"></iframe>
+<div style="font-family:var(--font-display);font-size:var(--text-2xl);line-height:1.05">{{ loc.city }}</div>
+<div style="font-family:var(--font-ui);font-weight:700;font-size:var(--text-lg)">{{ loc.address }}</div>
+<div style="font-size:var(--text-sm);line-height:var(--leading-snug);color:#4A2529">{{ loc.hours }}</div>
+<div style="display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-2)">
+<a href="{{ loc.whatsapp }}" target="_blank" rel="noopener" style="background:var(--color-nearblack-950);color:var(--color-accent-primary);font-family:var(--font-ui);font-weight:700;font-size:var(--text-sm);padding:10px 18px;border-radius:var(--radius-full)">WhatsApp</a>
+<a href="{{ loc.maps }}" target="_blank" rel="noopener" style="background:transparent;border:1px solid rgba(31,10,12,0.3);color:var(--color-nearblack-950);font-family:var(--font-ui);font-weight:700;font-size:var(--text-sm);padding:10px 18px;border-radius:var(--radius-full)">Cómo llegar</a>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="margin-top:var(--space-8);display:flex;align-items:center;gap:var(--space-6);flex-wrap:wrap;background:var(--color-bg-surface);border:1px solid var(--color-border-subtle);border-radius:var(--radius-card);padding:var(--space-6)">
+<img src="assets/mascot/mascot-eating.png" alt="Mascota Pancho Doto" style="width:110px;height:auto">
+<div style="flex:1;min-width:220px">
+<div style="font-family:var(--font-display);font-size:var(--text-2xl);color:var(--color-text-primary)">FOODTRUCK PARA EVENTOS</div>
+<p style="margin:var(--space-2) 0 var(--space-3) 0;color:var(--color-text-secondary)">Cumples, casamientos, egresados. Llevamos la panche a donde estés.</p>
+<a href="https://wa.me/5493364000000" target="_blank" rel="noopener" style="display:inline-block;background:var(--color-accent-secondary);color:#fff;font-family:var(--font-ui);font-weight:700;padding:12px 24px;border-radius:var(--radius-full)">Consultar por el foodtruck</a>
+</div>
+</div>
+</div>
+</section>
+
+<footer style="background:var(--color-bg-base);border-top:1px solid var(--color-border-subtle);padding:var(--space-16) var(--space-4) var(--space-10)">
+<div style="max-width:1150px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:var(--space-8);align-items:start">
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+<img src="assets/brand/logo.png" alt="Pancho Doto" style="width:110px;height:auto">
+<div style="font-family:var(--font-playful);color:var(--color-text-secondary);font-size:var(--text-sm);max-width:26ch">Los panchos del barrio, desde 1999.</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+<div style="font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-accent-primary)">HORARIOS</div>
+<div style="color:var(--color-text-secondary);font-size:var(--text-sm);line-height:var(--leading-relaxed)">Lun a Jue 11 a 24hs<br>Vie y Sáb 11 a 7hs<br>Dom 18 a 24hs</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:var(--space-2)">
+<div style="font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-accent-primary)">CONTACTO</div>
+<a href="https://wa.me/5493364000000" target="_blank" rel="noopener" style="font-size:var(--text-sm)">WhatsApp pedidos</a>
+<a href="https://instagram.com/panchodotosan_nicolas" target="_blank" rel="noopener" style="font-size:var(--text-sm)">@panchodotosan_nicolas</a>
+</div>
+<div style="display:flex;flex-direction:column;gap:var(--space-3)">
+<div style="font-family:var(--font-display);font-size:var(--text-lg);color:var(--color-accent-primary)">PEDÍ AHORA</div>
+<x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.Button" variant="pedidosya" onClick="{{ openPedidosYa }}" hint-size="170px,48px">PedidosYa</x-import>
+</div>
+</div>
+<div style="max-width:1150px;margin:var(--space-10) auto 0;padding-top:var(--space-5);border-top:1px solid var(--color-border-subtle);color:var(--color-text-secondary);font-size:var(--text-xs)">Pancho Doto · San Nicolás de los Arroyos · Villa Constitución</div>
+</footer>
+
+<sc-if value="{{ pedidosYaOpen }}" hint-placeholder-val="{{ false }}">
+<x-import component-from-global-scope="PanchoDotoDesignSystem_fb5ab5.Modal" open="{{ true }}" onClose="{{ closePedidosYa }}" title="¿Lo querés en tu casa?" ctaLabel="Ir a PedidosYa" onCta="{{ closePedidosYa }}" hint-size="420px,260px">Elegí la sucursal más cerca y pedilo por PedidosYa. Link a confirmar con el local.</x-import>
+</sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
+class Component extends DCLogic {
+  state = { activeTab: 'El pancho', pedidosYaOpen: false, cat: 'Pan', location: null };
+
+  scrollTo(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+  }
+
+  componentDidMount() {
+    this._sections = ['El pancho', 'Toppings', 'La barra', 'Combos', 'Nosotros', 'Sucursales'];
+    this._ids = { 'El pancho': 'sec-pancho', 'La barra': 'sec-barra', 'Toppings': 'sec-toppings', 'Combos': 'sec-combos', 'Nosotros': 'sec-mascota', 'Sucursales': 'sec-sucursales' };
+    this._onScroll = () => {
+      let current = this.state.activeTab;
+      for (const name of this._sections) {
+        const el = document.getElementById(this._ids[name]);
+        if (el && el.getBoundingClientRect().top <= 140) current = name;
+      }
+      if (current !== this.state.activeTab) this.setState({ activeTab: current });
+    };
+    this._onMove = (e) => {
+      const layers = document.querySelectorAll('[data-parallax]');
+      const dx = (e.clientX / window.innerWidth - 0.5);
+      const dy = (e.clientY / window.innerHeight - 0.5);
+      layers.forEach((l) => {
+        const d = parseFloat(l.getAttribute('data-parallax')) || 1;
+        l.style.setProperty('transform', `translate3d(${-dx * 26 * d}px, ${-dy * 20 * d}px, 0)`);
+      });
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('mousemove', this._onMove, { passive: true });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('mousemove', this._onMove);
+  }
+
+  renderVals() {
+    const CATS = {
+      'Pan': [
+        { name: 'Pan clásico', image: 'assets/products/pancho-clasico.webp', price: 'incluido' },
+        { name: 'Pan de papa', image: 'assets/products/pancho-chili.webp', price: '+$400' },
+        { name: 'Pan integral', image: 'assets/products/pancho-clasico.webp', price: '+$400' },
+      ],
+      'Salchicha': [
+        { name: 'Viena clásica', image: 'assets/products/pancho-clasico.webp', price: 'incluida' },
+        { name: 'Doble viena', image: 'assets/products/pancho-chili.webp', price: '+$900' },
+        { name: 'Ahumada', image: 'assets/products/pancho-clasico.webp', price: '+$700' },
+      ],
+      'Salsas': [
+        { name: 'Mayo clásica', image: 'assets/toppings/mayonesas.png', price: 'libre' },
+        { name: 'Mayo de ajo', image: 'assets/toppings/mayonesas.png', price: 'libre' },
+        { name: 'Chimichurri', image: 'assets/toppings/chimichurri.png', price: 'libre' },
+        { name: 'Ketchup', image: 'assets/toppings/mayonesas.png', price: 'libre' },
+        { name: 'Mostaza', image: 'assets/toppings/mayonesas.png', price: 'libre' },
+        { name: 'Picante Doto', image: 'assets/toppings/chimichurri.png', price: 'libre' },
+      ],
+      'Extras': [
+        { name: 'Cono de papas', image: 'assets/products/cono-papas-marca.png', price: '$2.800' },
+        { name: 'Papas con cheddar', image: 'assets/products/cono-papas.webp', price: '$3.400' },
+        { name: 'Coca 500ml', image: 'assets/beverages/coca-plastico.webp', price: '$1.800' },
+        { name: 'Coca vidrio', image: 'assets/beverages/coca-vidrio.webp', price: '$1.500' },
+        { name: 'Stella lata', image: 'assets/beverages/stella-artois.png', price: '$2.200' },
+      ],
+    };
+    const active = this.state.cat;
+    const cats = Object.keys(CATS).map((name) => ({
+      name,
+      select: () => this.setState({ cat: name }),
+      style: `font-family:var(--font-playful);font-size:var(--text-base);padding:10px 22px;border-radius:var(--radius-full);cursor:pointer;transition:all .2s ease;border:1px solid ${name === active ? 'var(--color-accent-primary)' : 'var(--color-border-subtle)'};background:${name === active ? 'var(--color-accent-primary)' : 'transparent'};color:${name === active ? 'var(--color-text-on-accent)' : 'var(--color-text-secondary)'}`,
+    }));
+    const combos = [
+      { title: 'COMBO DOTO', tag: 'El más pedido', note: 'para uno', desc: 'Pancho clásico + cono de papas + Coca 500ml.', price: '$6.900', image: 'assets/products/pancho-clasico.webp' },
+      { title: 'COMBO CHILI', tag: 'Picante', note: 'para uno', desc: 'Pancho chili con cheddar + papas con marca + gaseosa.', price: '$7.600', image: 'assets/products/pancho-chili.webp' },
+      { title: 'DOBLE VIENA', tag: 'Con hambre', note: 'porción doble', desc: 'Doble salchicha, 4 toppings a elección + papas pay.', price: '$8.200', image: 'assets/products/pancho-clasico.webp' },
+      { title: 'POST BOLICHE', tag: 'Para compartir', note: 'para dos', desc: 'Dos panchos, cono grande de papas y dos latas.', price: '$12.400', image: 'assets/products/cono-papas-marca.png' },
+    ];
+    const toppingsOnly = [
+      { name: 'Papas Pay', image: 'assets/toppings/papas-fritas.png', price: 'libre' },
+      { name: 'Cebolla crispy', image: 'assets/toppings/papas-fritas.png', price: 'libre' },
+      { name: 'Choclo', image: 'assets/toppings/papas-fritas.png', price: 'libre' },
+      { name: 'Panceta crispy', image: 'assets/toppings/papas-fritas.png', price: '+$600' },
+      { name: 'Cheddar', image: 'assets/toppings/mayonesas.png', price: '+$600' },
+      { name: 'Jalapeños', image: 'assets/toppings/chimichurri.png', price: '+$400' },
+      { name: 'Verdeo', image: 'assets/toppings/chimichurri.png', price: 'libre' },
+      { name: 'Pepinillos', image: 'assets/toppings/chimichurri.png', price: 'libre' },
+    ];
+    const embed = (q) => `https://maps.google.com/maps?q=${encodeURIComponent(q)}&z=16&output=embed`;
+    const locations = [
+      { city: 'San Nicolás', address: 'Italia 17', hours: 'Lun a Jue 11 a 24hs · Vie y Sáb 11 a 7hs', whatsapp: 'https://wa.me/5493364000000', maps: 'https://maps.google.com/?q=Italia+17+San+Nicolás+de+los+Arroyos', embed: embed('Italia 17, San Nicolás de los Arroyos, Buenos Aires') },
+      { city: 'San Nicolás', address: 'Mitre 337', hours: 'Lun a Jue 18 a 24hs · Vie a Dom 18 a 7hs', whatsapp: 'https://wa.me/5493364000000', maps: 'https://maps.google.com/?q=Mitre+337+San+Nicolás+de+los+Arroyos', embed: embed('Bartolomé Mitre 337, San Nicolás de los Arroyos, Buenos Aires') },
+      { city: 'Villa Constitución', address: 'Dirección a confirmar', hours: 'Horarios a confirmar con el local', whatsapp: 'https://wa.me/5493364000000', maps: 'https://maps.google.com/?q=Villa+Constitución', embed: embed('Villa Constitución, Santa Fe') },
+    ];
+    return {
+      videoRef: (el) => {
+        if (!el) return;
+        el.muted = true; el.defaultMuted = true; el.volume = 0; el.playsInline = true; el.loop = true;
+        el.setAttribute('muted', '');
+        const go = () => { const p = el.play(); if (p && p.catch) p.catch(() => {}); };
+        go();
+        el.addEventListener('canplay', go, { once: true });
+        document.addEventListener('click', go, { once: true });
+      },
+      toppingsOnly,
+      locations,
+      goSucursales: () => this.scrollTo('sec-sucursales'),
+      combos,
+      cats,
+      catItems: CATS[active],
+      tabs: ['El pancho', 'Toppings', 'La barra', 'Combos', 'Nosotros', 'Sucursales'],
+      activeTab: this.state.activeTab,
+      goSection: (tab) => { this.setState({ activeTab: tab }); this.scrollTo({ 'El pancho': 'sec-pancho', 'La barra': 'sec-barra', 'Toppings': 'sec-toppings', 'Combos': 'sec-combos', 'Nosotros': 'sec-mascota', 'Sucursales': 'sec-sucursales' }[tab]); },
+      goMenu: () => this.scrollTo('sec-pancho'),
+      goToppings: () => this.scrollTo('sec-toppings'),
+      pedidosYaOpen: this.state.pedidosYaOpen,
+      openPedidosYa: () => this.setState({ pedidosYaOpen: true }),
+      closePedidosYa: () => this.setState({ pedidosYaOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>
