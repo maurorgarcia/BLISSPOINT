@@ -41,8 +41,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            left: "4%",
-            top: "12%",
+            left: "2%",
+            top: "6%",
             width: 120,
             opacity: 0.28,
             filter: "blur(2px)",
@@ -55,8 +55,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            right: "6%",
-            top: "16%",
+            right: "3%",
+            top: "9%",
             width: 140,
             opacity: 0.3,
             filter: "blur(2px)",
@@ -69,8 +69,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            left: "9%",
-            bottom: "10%",
+            left: "6%",
+            bottom: "5%",
             width: 170,
             opacity: 0.4,
             filter: "blur(1px)",
@@ -83,8 +83,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            right: "8%",
-            bottom: "6%",
+            right: "5%",
+            bottom: "3%",
             width: 190,
             opacity: 0.42,
             filter: "blur(1px)",
@@ -97,8 +97,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            left: "14%",
-            top: "42%",
+            left: "18%",
+            top: "38%",
             width: 100,
             opacity: 0.32,
             filter: "blur(1px)",
@@ -111,12 +111,82 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            right: "12%",
-            top: "48%",
+            right: "16%",
+            top: "52%",
             width: 130,
             opacity: 0.3,
             filter: "blur(1px)",
             transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="0.6"
+          src="/assets/products/pancho-chili.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            left: "28%",
+            top: "16%",
+            width: 65,
+            opacity: 0.2,
+            filter: "blur(2px)",
+            transition: "transform 0.5s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="0.9"
+          src="/assets/products/pancho-clasico.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            right: "26%",
+            top: "24%",
+            width: 55,
+            opacity: 0.2,
+            filter: "blur(2px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="1.1"
+          src="/assets/products/pancho-chili.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            left: "1%",
+            top: "66%",
+            width: 75,
+            opacity: 0.3,
+            filter: "blur(1px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="1.3"
+          src="/assets/products/pancho-clasico.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            right: "1%",
+            top: "70%",
+            width: 65,
+            opacity: 0.28,
+            filter: "blur(1px)",
+            transition: "transform 0.35s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="1.5"
+          src="/assets/products/pancho-clasico.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            left: "34%",
+            bottom: "2%",
+            width: 55,
+            opacity: 0.22,
+            filter: "blur(2px)",
+            transition: "transform 0.35s cubic-bezier(.22,1,.36,1)",
           }}
         />
       </div>
