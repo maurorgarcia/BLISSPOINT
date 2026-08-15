@@ -35,6 +35,13 @@ export const metadata: Metadata = {
   icons: { icon: "/assets/brand/logo.png" },
 };
 
+const fontVars = {
+  "--font-display": `${newscrash.style.fontFamily}, "Anton", sans-serif`,
+  "--font-script": `${magicClover.style.fontFamily}, "Kaushan Script", cursive`,
+  "--font-playful": `${gokartBubble.style.fontFamily}, ${baloo2.style.fontFamily}, cursive`,
+  "--font-ui": `${baloo2.style.fontFamily}, sans-serif`,
+} as React.CSSProperties;
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
@@ -48,6 +55,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${gokartBubble.variable} ${magicClover.variable} ${newscrash.variable} ${baloo2.variable}`}
+        style={fontVars}
       >
         {children}
       </body>

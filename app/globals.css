@@ -42,11 +42,9 @@
   --color-status-error: var(--color-red-500);
   --color-status-success: var(--color-green-500);
 
-  /* Fuentes */
-  --font-display: var(--font-newscrash), "Anton", sans-serif;
-  --font-script: var(--font-magicclover), "Kaushan Script", cursive;
-  --font-playful: var(--font-gokart), var(--font-baloo2), cursive;
-  --font-ui: var(--font-baloo2), sans-serif;
+  /* Fuentes: --font-display/--font-script/--font-playful/--font-ui se
+     definen inline en app/layout.tsx (style={fontVars} en <body>) con
+     el string ya resuelto por next/font, para evitar var()-en-var(). */
 
   /* Tipografía */
   --text-xs: 0.75rem;
