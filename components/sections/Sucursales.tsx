@@ -57,7 +57,7 @@ export function Sucursales() {
                   style={{
                     width: "100%",
                     height: 150,
-                    border: "3px solid var(--color-accent-secondary)",
+                    border: 0,
                     borderRadius: "var(--radius-sm)",
                     filter: "saturate(0.9)",
                   }}
@@ -83,9 +83,18 @@ export function Sucursales() {
                   {i + 1}
                 </div>
               </div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", lineHeight: 1.05 }}>{loc.city}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: "var(--text-lg)" }}>
-                <i className="ph-fill ph-map-pin" style={{ color: "var(--color-accent-secondary)", fontSize: 18 }} />
+              <div
+                style={{
+                  fontFamily: "var(--font-playful)",
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-accent-secondary)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {loc.city}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", lineHeight: 1.05 }}>
+                <i className="ph-fill ph-map-pin" style={{ color: "var(--color-accent-secondary)", fontSize: 20 }} />
                 {loc.address}
               </div>
               <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529" }}>
