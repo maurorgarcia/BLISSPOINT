@@ -30,7 +30,7 @@ export function Sucursales() {
           Tres puntos y un foodtruck que va a donde lo llames.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(270px,1fr))", gap: "var(--space-gap-grid)" }}>
-          {LOCATIONS.map((loc) => (
+          {LOCATIONS.map((loc, i) => (
             <div
               key={`${loc.city}-${loc.address}`}
               className="pd-location-card"
@@ -49,23 +49,75 @@ export function Sucursales() {
                 animationRange: "entry 0% cover 22%",
               } as React.CSSProperties}
             >
-              <iframe
-                src={loc.embed}
-                title={`Mapa ${loc.address}`}
-                loading="lazy"
-                style={{ width: "100%", height: 150, border: 0, borderRadius: "var(--radius-sm)", filter: "saturate(0.9)" }}
-              />
-              <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", lineHeight: 1.05 }}>{loc.city}</div>
-              <div style={{ fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: "var(--text-lg)" }}>{loc.address}</div>
-              <div style={{ fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529" }}>{loc.hours}</div>
+              <div style={{ position: "relative" }}>
+                <iframe
+                  src={loc.embed}
+                  title={`Mapa ${loc.address}`}
+                  loading="lazy"
+                  style={{
+                    width: "100%",
+                    height: 150,
+                    border: 0,
+                    borderRadius: "var(--radius-sm)",
+                    filter: "saturate(0.9)",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    top: -10,
+                    left: -10,
+                    width: 32,
+                    height: 32,
+                    borderRadius: "var(--radius-full)",
+                    background: "var(--color-accent-primary)",
+                    color: "var(--color-nearblack-950)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontFamily: "var(--font-display)",
+                    fontSize: "var(--text-base)",
+                    boxShadow: "0 6px 14px rgba(15,5,6,0.5)",
+                  }}
+                >
+                  {i + 1}
+                </div>
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-playful)",
+                  fontSize: "var(--text-sm)",
+                  color: "var(--color-accent-secondary)",
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {loc.city}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", lineHeight: 1.05 }}>
+                <i className="ph-fill ph-map-pin" style={{ color: "var(--color-accent-secondary)", fontSize: 20 }} />
+                {loc.address}
+              </div>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529" }}>
+                <i className="ph-fill ph-clock" style={{ color: "var(--color-accent-secondary)", fontSize: 16, marginTop: 2, flexShrink: 0 }} />
+                {loc.hours}
+              </div>
+              {loc.note ? (
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529", opacity: 0.75 }}>
+                  <i className="ph-fill ph-moped" style={{ color: "var(--color-accent-secondary)", fontSize: 16, marginTop: 2, flexShrink: 0 }} />
+                  {loc.note}
+                </div>
+              ) : null}
               <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginTop: "var(--space-2)" }}>
                 <a
                   href={loc.whatsapp}
                   target="_blank"
                   rel="noopener"
                   style={{
-                    background: "var(--color-nearblack-950)",
-                    color: "var(--color-accent-primary)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    background: "var(--color-accent-secondary)",
+                    color: "#fff",
                     fontFamily: "var(--font-ui)",
                     fontWeight: 700,
                     fontSize: "var(--text-sm)",
@@ -73,6 +125,7 @@ export function Sucursales() {
                     borderRadius: "var(--radius-full)",
                   }}
                 >
+                  <i className="ph-fill ph-whatsapp-logo" style={{ fontSize: 16 }} />
                   WhatsApp
                 </a>
                 <a
@@ -80,9 +133,12 @@ export function Sucursales() {
                   target="_blank"
                   rel="noopener"
                   style={{
-                    background: "transparent",
-                    border: "1px solid rgba(31,10,12,0.3)",
-                    color: "var(--color-nearblack-950)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    background: "var(--color-yellow-600)",
+                    border: "none",
+                    color: "var(--color-text-on-accent)",
                     fontFamily: "var(--font-ui)",
                     fontWeight: 700,
                     fontSize: "var(--text-sm)",
@@ -91,6 +147,7 @@ export function Sucursales() {
                   }}
                 >
                   Cómo llegar
+                  <i className="ph-fill ph-arrow-right" style={{ fontSize: 16 }} />
                 </a>
               </div>
             </div>

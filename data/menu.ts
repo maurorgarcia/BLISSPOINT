@@ -20,6 +20,7 @@ export type Location = {
   whatsapp: string;
   maps: string;
   embed: string;
+  note?: string;
 };
 
 // Precios y datos marcados "a confirmar" son placeholders del brief original.
@@ -55,14 +56,28 @@ export const CATS: Record<BarCategory, MenuItem[]> = {
 };
 
 export const TOPPINGS_ONLY: MenuItem[] = [
-  { name: "Papas Pay", image: "/assets/toppings/papas-fritas.png", price: "libre" },
-  { name: "Cebolla crispy", image: "/assets/toppings/papas-fritas.png", price: "libre" },
-  { name: "Choclo", image: "/assets/toppings/papas-fritas.png", price: "libre" },
-  { name: "Panceta crispy", image: "/assets/toppings/papas-fritas.png", price: "+$600" },
-  { name: "Cheddar", image: "/assets/toppings/mayonesas.png", price: "+$600" },
+  { name: "Lluvia de papas pay o papas al hilo", image: "/assets/toppings/papas-fritas.png", price: "libre" },
+  { name: "Cebolla caramelizada", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Queso cheddar fundido", image: "/assets/toppings/mayonesas.png", price: "+$600" },
+  { name: "Panceta o tocino crocante en trocitos", image: "/assets/toppings/papas-fritas.png", price: "+$600" },
   { name: "Jalapeños", image: "/assets/toppings/chimichurri.png", price: "+$400" },
   { name: "Verdeo", image: "/assets/toppings/chimichurri.png", price: "libre" },
-  { name: "Pepinillos", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Salsa criolla (tomate, cebolla y aceite)", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Chucrut", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Pico de gallo", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Nacho chips o Doritos picados", image: "/assets/toppings/papas-fritas.png", price: "+$400" },
+  { name: "Pepinillos agridulces en rodajas", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Queso crema con cebollita de verdeo", image: "/assets/toppings/mayonesas.png", price: "+$500" },
+  { name: "Palta o guacamole", image: "/assets/toppings/mayonesas.png", price: "+$700" },
+  { name: "Salsa barbacoa", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Morrones asados o salteados", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Choclo en granos", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Salsa provenzal (ajo y perejil)", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Queso parmesano o rallado fino", image: "/assets/toppings/mayonesas.png", price: "+$400" },
+  { name: "Huevo revuelto o huevo hilado", image: "/assets/toppings/mayonesas.png", price: "+$500" },
+  { name: "Salsa picante o ají molido salteado", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Cebolla morada en tiras finas", image: "/assets/toppings/chimichurri.png", price: "libre" },
+  { name: "Aceitunas verdes o negras picadas", image: "/assets/toppings/chimichurri.png", price: "+$400" },
 ];
 
 export const COMBOS: Combo[] = [
@@ -120,13 +135,13 @@ export const LOCATIONS: Location[] = [
     embed: embed("Bartolomé Mitre 337, San Nicolás de los Arroyos, Buenos Aires"),
   },
   {
-    // Dirección y horarios de Villa Constitución a confirmar con el cliente.
     city: "Villa Constitución",
-    address: "Dirección a confirmar",
-    hours: "Horarios a confirmar con el local",
-    whatsapp: "https://wa.me/5493364000000",
-    maps: "https://maps.google.com/?q=Villa+Constitución",
-    embed: embed("Villa Constitución, Santa Fe"),
+    address: "Av. San Martín 739",
+    hours: "Lun a Jue 18 a 24hs · Vie a Dom 18 a 7hs",
+    whatsapp: "https://wa.link/h4f5w7",
+    maps: "https://maps.google.com/?q=Av.+San+Martín+739+Villa+Constitución",
+    embed: embed("Av. San Martín 739, Villa Constitución, Santa Fe"),
+    note: "Foodtruck para eventos · Envíos por @yendoapp",
   },
 ];
 

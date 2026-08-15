@@ -41,8 +41,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            left: "4%",
-            top: "12%",
+            left: "2%",
+            top: "6%",
             width: 120,
             opacity: 0.28,
             filter: "blur(2px)",
@@ -55,8 +55,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            right: "6%",
-            top: "16%",
+            right: "3%",
+            top: "9%",
             width: 140,
             opacity: 0.3,
             filter: "blur(2px)",
@@ -69,8 +69,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            left: "9%",
-            bottom: "10%",
+            left: "6%",
+            bottom: "5%",
             width: 170,
             opacity: 0.4,
             filter: "blur(1px)",
@@ -83,8 +83,8 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           alt=""
           style={{
             position: "absolute",
-            right: "8%",
-            bottom: "6%",
+            right: "5%",
+            bottom: "3%",
             width: 190,
             opacity: 0.42,
             filter: "blur(1px)",
@@ -92,28 +92,100 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           }}
         />
         <img
-          data-parallax="1.2"
-          src="/assets/products/cono-papas.webp"
+          data-parallax="1.0"
+          src="/assets/products/pancho-clasico.webp"
           alt=""
           style={{
             position: "absolute",
-            left: "21%",
-            top: "56%",
-            width: 110,
-            opacity: 0.5,
+            left: "18%",
+            top: "38%",
+            width: 100,
+            opacity: 0.32,
+            filter: "blur(1px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="1.2"
+          src="/assets/products/pancho-chili.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            right: "16%",
+            top: "52%",
+            width: 130,
+            opacity: 0.3,
+            filter: "blur(1px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="0.6"
+          src="/assets/products/pancho-chili.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            left: "28%",
+            top: "16%",
+            width: 65,
+            opacity: 0.2,
+            filter: "blur(2px)",
+            transition: "transform 0.5s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="0.9"
+          src="/assets/products/pancho-clasico.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            right: "26%",
+            top: "24%",
+            width: 55,
+            opacity: 0.2,
+            filter: "blur(2px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="1.1"
+          src="/assets/products/pancho-chili.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            left: "1%",
+            top: "66%",
+            width: 75,
+            opacity: 0.3,
+            filter: "blur(1px)",
+            transition: "transform 0.4s cubic-bezier(.22,1,.36,1)",
+          }}
+        />
+        <img
+          data-parallax="1.3"
+          src="/assets/products/pancho-clasico.webp"
+          alt=""
+          style={{
+            position: "absolute",
+            right: "1%",
+            top: "70%",
+            width: 65,
+            opacity: 0.28,
+            filter: "blur(1px)",
             transition: "transform 0.35s cubic-bezier(.22,1,.36,1)",
           }}
         />
         <img
-          data-parallax="1.4"
-          src="/assets/toppings/mayonesas.png"
+          data-parallax="1.5"
+          src="/assets/products/pancho-clasico.webp"
           alt=""
           style={{
             position: "absolute",
-            right: "19%",
-            top: "6%",
-            width: 120,
-            opacity: 0.45,
+            left: "34%",
+            bottom: "2%",
+            width: 55,
+            opacity: 0.22,
+            filter: "blur(2px)",
             transition: "transform 0.35s cubic-bezier(.22,1,.36,1)",
           }}
         />
@@ -168,33 +240,6 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
             Pan, salchicha y hasta 4 toppings de la barra. Vos elegís todo, nosotros lo armamos al
             toque.
           </p>
-          <div
-            className="pd-order-price"
-            style={{ display: "flex", alignItems: "center", gap: "var(--space-5)", flexWrap: "wrap" }}
-          >
-            <div
-              style={{
-                fontFamily: "var(--font-display)",
-                fontSize: "var(--text-6xl)",
-                lineHeight: 1,
-                color: "var(--color-accent-primary)",
-                textShadow: "0 10px 24px rgba(15,5,6,0.6)",
-              }}
-            >
-              $3.200
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-playful)",
-                fontSize: "var(--text-sm)",
-                color: "var(--color-text-secondary)",
-                maxWidth: "14ch",
-                lineHeight: 1.2,
-              }}
-            >
-              precio del pancho base
-            </div>
-          </div>
           <div className="pd-order-button">
             <Button variant="primary" size="lg" onClick={onGoToppings}>
               Rellenalo como quieras ↓
@@ -212,6 +257,42 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
               transition: "transform 0.3s cubic-bezier(.22,1,.36,1)",
             }}
           >
+            <div
+              style={{
+                position: "absolute",
+                bottom: "8%",
+                right: "4%",
+                zIndex: 2,
+                background: "var(--color-accent-primary)",
+                color: "var(--color-text-on-accent)",
+                borderRadius: "var(--radius-card)",
+                padding: "var(--space-3) var(--space-6)",
+                boxShadow: "0 14px 28px rgba(15,5,6,0.5)",
+                textAlign: "center",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <div
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "var(--text-5xl)",
+                  lineHeight: 1,
+                }}
+              >
+                $3.200
+              </div>
+              <div
+                style={{
+                  fontFamily: "var(--font-playful)",
+                  fontSize: "var(--text-xs)",
+                  lineHeight: 1.2,
+                  marginTop: 2,
+                  opacity: 0.65,
+                }}
+              >
+                precio del pancho base
+              </div>
+            </div>
             <img
               src="/assets/products/pancho-clasico.webp"
               alt="Pancho Doto armado"

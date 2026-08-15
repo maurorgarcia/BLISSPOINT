@@ -42,6 +42,8 @@ function ToppingTile({ t }: { t: MenuItem }) {
         <img
           src={t.image}
           alt={t.name}
+          draggable={false}
+          onDragStart={(e) => e.preventDefault()}
           style={{
             width: "100%",
             height: "100%",
@@ -75,11 +77,23 @@ function ToppingTile({ t }: { t: MenuItem }) {
   );
 }
 
-const PAGES = chunk(TOPPINGS_ONLY, 4);
-
-export function Toppings() {
+function ToppingsCarouselTrack({
+  items,
+  pageSize,
+  trackClassName,
+  pageClassName,
+  drag = false,
+}: {
+  items: MenuItem[];
+  pageSize: number;
+  trackClassName: string;
+  pageClassName: string;
+  drag?: boolean;
+}) {
+  const pages = chunk(items, pageSize);
   const trackRef = useRef<HTMLDivElement>(null);
   const [activePage, setActivePage] = useState(0);
+  const dragState = useRef({ dragging: false, startX: 0, startScroll: 0 });
 
   useEffect(() => {
     const el = trackRef.current;
@@ -98,6 +112,66 @@ export function Toppings() {
     el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
   };
 
+  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!drag) return;
+    const el = trackRef.current;
+    if (!el) return;
+    dragState.current = { dragging: true, startX: e.clientX, startScroll: el.scrollLeft };
+    el.setPointerCapture(e.pointerId);
+    el.classList.add("pd-dragging");
+  };
+
+  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!drag || !dragState.current.dragging) return;
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollLeft = dragState.current.startScroll - (e.clientX - dragState.current.startX);
+  };
+
+  const endDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!drag || !dragState.current.dragging) return;
+    dragState.current.dragging = false;
+    const el = trackRef.current;
+    el?.classList.remove("pd-dragging");
+    if (!el) return;
+    goToPage(Math.round(el.scrollLeft / el.clientWidth));
+  };
+
+  return (
+    <div>
+      <div
+        className={trackClassName}
+        ref={trackRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+      >
+        {pages.map((page, i) => (
+          <div className={pageClassName} key={i}>
+            {page.map((t) => (
+              <ToppingTile key={t.name} t={t} />
+            ))}
+          </div>
+        ))}
+      </div>
+      {pages.length > 1 ? (
+        <div className="pd-toppings-dots">
+          {pages.map((_, i) => (
+            <button
+              key={i}
+              className={`pd-dot${i === activePage ? " pd-dot-active" : ""}`}
+              onClick={() => goToPage(i)}
+              aria-label={`Página ${i + 1} de toppings`}
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
+  );
+}
+
+export function Toppings() {
   return (
     <section
       id="sec-toppings"
@@ -171,34 +245,25 @@ export function Toppings() {
           </p>
         </div>
 
-        {/* Desktop (>1024px): grid que se acomoda solo */}
-        <div className="pd-toppings-grid-desktop">
-          {TOPPINGS_ONLY.map((t) => (
-            <ToppingTile key={t.name} t={t} />
-          ))}
+        {/* Mobile/tablet (<=1024px): carrusel de a 4, swipe táctil */}
+        <div className="pd-toppings-carousel">
+          <ToppingsCarouselTrack
+            items={TOPPINGS_ONLY}
+            pageSize={4}
+            trackClassName="pd-toppings-track"
+            pageClassName="pd-toppings-page"
+          />
         </div>
 
-        {/* Mobile/tablet (<=1024px): carrusel de a 4 con paginado por swipe */}
-        <div className="pd-toppings-carousel">
-          <div className="pd-toppings-track" ref={trackRef}>
-            {PAGES.map((page, i) => (
-              <div className="pd-toppings-page" key={i}>
-                {page.map((t) => (
-                  <ToppingTile key={t.name} t={t} />
-                ))}
-              </div>
-            ))}
-          </div>
-          <div className="pd-toppings-dots">
-            {PAGES.map((_, i) => (
-              <button
-                key={i}
-                className={`pd-dot${i === activePage ? " pd-dot-active" : ""}`}
-                onClick={() => goToPage(i)}
-                aria-label={`Página ${i + 1} de toppings`}
-              />
-            ))}
-          </div>
+        {/* Desktop (>1024px): carrusel de a 8, se arrastra con el mouse */}
+        <div className="pd-toppings-carousel-desktop">
+          <ToppingsCarouselTrack
+            items={TOPPINGS_ONLY}
+            pageSize={8}
+            trackClassName="pd-toppings-track-desktop"
+            pageClassName="pd-toppings-page-desktop"
+            drag
+          />
         </div>
       </div>
     </section>
