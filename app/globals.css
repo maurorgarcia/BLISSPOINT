@@ -236,32 +236,6 @@ a:hover {
   transform: translateY(-6px);
 }
 
-.pd-location-card-h {
-  display: flex;
-  align-items: stretch;
-  gap: var(--space-5);
-  padding: var(--space-5);
-}
-
-.pd-location-map-h {
-  flex: 0 0 260px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  min-height: 200px;
-}
-
-@media (max-width: 640px) {
-  .pd-location-card-h {
-    flex-direction: column;
-  }
-  .pd-location-map-h {
-    flex: 0 0 auto;
-    width: 100%;
-    height: 180px;
-    min-height: 0;
-  }
-}
-
 /* ==========================================================================
    Mobile & tablet fixes (<=1024px salvo que se indique otro breakpoint)
    ========================================================================== */
