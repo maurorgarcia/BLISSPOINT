@@ -182,16 +182,14 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
               position: "relative",
               display: "flex",
               justifyContent: "center",
-              paddingTop: "var(--space-8)",
               transition: "transform 0.3s cubic-bezier(.22,1,.36,1)",
             }}
           >
             <div
               style={{
                 position: "absolute",
-                top: 0,
-                left: "50%",
-                transform: "translate(-50%, -20%)",
+                bottom: "8%",
+                right: "4%",
                 zIndex: 2,
                 background: "var(--color-accent-primary)",
                 color: "var(--color-text-on-accent)",
@@ -217,6 +215,7 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
                   fontSize: "var(--text-xs)",
                   lineHeight: 1.2,
                   marginTop: 2,
+                  opacity: 0.65,
                 }}
               >
                 precio del pancho base
