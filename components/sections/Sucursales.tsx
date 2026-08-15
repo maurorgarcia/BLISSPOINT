@@ -29,19 +29,15 @@ export function Sucursales() {
         >
           Tres puntos y un foodtruck que va a donde lo llames.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(270px,1fr))", gap: "var(--space-gap-grid)" }}>
-          {LOCATIONS.map((loc, i) => (
+        <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-gap-grid)" }}>
+          {LOCATIONS.map((loc) => (
             <div
               key={`${loc.city}-${loc.address}`}
-              className="pd-location-card"
+              className="pd-location-card pd-location-card-h"
               style={{
                 background: "var(--color-bg-panel)",
                 color: "var(--color-text-on-panel)",
                 borderRadius: "var(--radius-card)",
-                padding: "var(--space-6)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--space-3)",
                 boxShadow: "0 18px 32px rgba(15,5,6,0.5)",
                 transition: "transform .25s cubic-bezier(.22,1,.36,1)",
                 animation: "pdReveal .7s both",
@@ -49,91 +45,53 @@ export function Sucursales() {
                 animationRange: "entry 0% cover 22%",
               } as React.CSSProperties}
             >
-              <div style={{ position: "relative" }}>
+              <div className="pd-location-map-h">
                 <iframe
                   src={loc.embed}
                   title={`Mapa ${loc.address}`}
                   loading="lazy"
-                  style={{
-                    width: "100%",
-                    height: 150,
-                    border: "3px solid var(--color-accent-primary)",
-                    borderRadius: "var(--radius-sm)",
-                    filter: "saturate(0.9)",
-                  }}
+                  style={{ width: "100%", height: "100%", border: 0, filter: "saturate(0.9)" }}
                 />
-                <div
-                  style={{
-                    position: "absolute",
-                    top: -10,
-                    left: -10,
-                    width: 32,
-                    height: 32,
-                    borderRadius: "var(--radius-full)",
-                    background: "var(--color-nearblack-950)",
-                    color: "var(--color-accent-primary)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontFamily: "var(--font-display)",
-                    fontSize: "var(--text-base)",
-                    boxShadow: "0 6px 14px rgba(15,5,6,0.5)",
-                  }}
-                >
-                  {i + 1}
+              </div>
+              <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "var(--space-2)", justifyContent: "center" }}>
+                <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", lineHeight: 1.05 }}>{loc.city}</div>
+                <div style={{ fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: "var(--text-lg)" }}>{loc.address}</div>
+                <div style={{ fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529" }}>{loc.hours}</div>
+                <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginTop: "var(--space-2)" }}>
+                  <a
+                    href={loc.whatsapp}
+                    target="_blank"
+                    rel="noopener"
+                    style={{
+                      background: "var(--color-nearblack-950)",
+                      color: "var(--color-accent-primary)",
+                      fontFamily: "var(--font-ui)",
+                      fontWeight: 700,
+                      fontSize: "var(--text-sm)",
+                      padding: "10px 18px",
+                      borderRadius: "var(--radius-full)",
+                    }}
+                  >
+                    WhatsApp
+                  </a>
+                  <a
+                    href={loc.maps}
+                    target="_blank"
+                    rel="noopener"
+                    style={{
+                      background: "transparent",
+                      border: "1px solid rgba(31,10,12,0.3)",
+                      color: "var(--color-nearblack-950)",
+                      fontFamily: "var(--font-ui)",
+                      fontWeight: 700,
+                      fontSize: "var(--text-sm)",
+                      padding: "10px 18px",
+                      borderRadius: "var(--radius-full)",
+                    }}
+                  >
+                    Cómo llegar
+                  </a>
                 </div>
-              </div>
-              <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", lineHeight: 1.05 }}>{loc.city}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-ui)", fontWeight: 700, fontSize: "var(--text-lg)" }}>
-                <i className="ph-fill ph-map-pin" style={{ color: "var(--color-accent-secondary)", fontSize: 18 }} />
-                {loc.address}
-              </div>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529" }}>
-                <i className="ph-fill ph-clock" style={{ color: "var(--color-accent-secondary)", fontSize: 16, marginTop: 2, flexShrink: 0 }} />
-                {loc.hours}
-              </div>
-              <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", marginTop: "var(--space-2)" }}>
-                <a
-                  href={loc.whatsapp}
-                  target="_blank"
-                  rel="noopener"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    background: "var(--color-nearblack-950)",
-                    color: "var(--color-accent-primary)",
-                    fontFamily: "var(--font-ui)",
-                    fontWeight: 700,
-                    fontSize: "var(--text-sm)",
-                    padding: "10px 18px",
-                    borderRadius: "var(--radius-full)",
-                  }}
-                >
-                  <i className="ph-fill ph-whatsapp-logo" style={{ fontSize: 16 }} />
-                  WhatsApp
-                </a>
-                <a
-                  href={loc.maps}
-                  target="_blank"
-                  rel="noopener"
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    background: "transparent",
-                    border: "1px solid rgba(31,10,12,0.3)",
-                    color: "var(--color-nearblack-950)",
-                    fontFamily: "var(--font-ui)",
-                    fontWeight: 700,
-                    fontSize: "var(--text-sm)",
-                    padding: "10px 18px",
-                    borderRadius: "var(--radius-full)",
-                  }}
-                >
-                  Cómo llegar
-                  <i className="ph-fill ph-arrow-right" style={{ fontSize: 16 }} />
-                </a>
               </div>
             </div>
           ))}
