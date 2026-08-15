@@ -119,6 +119,7 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
         />
       </div>
       <div
+        className="pd-pancho-grid"
         style={{
           maxWidth: 1150,
           margin: "0 auto",
@@ -130,6 +131,7 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
         }}
       >
         <div
+          className="pd-pancho-text-col"
           data-parallax="0.25"
           style={{
             display: "flex",
@@ -139,6 +141,7 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           }}
         >
           <div
+            className="pd-order-title"
             style={{
               fontFamily: "var(--font-display)",
               fontSize: "var(--text-hero-headline)",
@@ -152,6 +155,7 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
             <span style={{ color: "var(--color-accent-primary)" }}>COMO QUIERAS</span>
           </div>
           <p
+            className="pd-order-paragraph"
             style={{
               margin: 0,
               maxWidth: "36ch",
@@ -164,7 +168,10 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
             Pan, salchicha y hasta 4 toppings de la barra. Vos elegís todo, nosotros lo armamos al
             toque.
           </p>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-5)", flexWrap: "wrap" }}>
+          <div
+            className="pd-order-price"
+            style={{ display: "flex", alignItems: "center", gap: "var(--space-5)", flexWrap: "wrap" }}
+          >
             <div
               style={{
                 fontFamily: "var(--font-display)",
@@ -188,31 +195,34 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
               precio del pancho base
             </div>
           </div>
-          <div>
+          <div className="pd-order-button">
             <Button variant="primary" size="lg" onClick={onGoToppings}>
               Rellenalo como quieras ↓
             </Button>
           </div>
         </div>
-        <div
-          data-parallax="1.6"
-          style={{
-            position: "relative",
-            display: "flex",
-            justifyContent: "center",
-            transition: "transform 0.3s cubic-bezier(.22,1,.36,1)",
-          }}
-        >
-          <img
-            src="/assets/products/pancho-clasico.webp"
-            alt="Pancho Doto armado"
+        <div className="pd-pancho-image-col">
+          <div
+            className="pd-order-image"
+            data-parallax="1.6"
             style={{
-              width: "min(520px,84vw)",
-              height: "auto",
-              animation: "pdBob 5s ease-in-out infinite",
-              filter: "drop-shadow(0 40px 34px rgba(15,5,6,0.75))",
+              position: "relative",
+              display: "flex",
+              justifyContent: "center",
+              transition: "transform 0.3s cubic-bezier(.22,1,.36,1)",
             }}
-          />
+          >
+            <img
+              src="/assets/products/pancho-clasico.webp"
+              alt="Pancho Doto armado"
+              style={{
+                width: "min(520px,84vw)",
+                height: "auto",
+                animation: "pdBob 5s ease-in-out infinite",
+                filter: "drop-shadow(0 40px 34px rgba(15,5,6,0.75))",
+              }}
+            />
+          </div>
         </div>
       </div>
     </section>

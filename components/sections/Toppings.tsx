@@ -1,6 +1,103 @@
-import { TOPPINGS_ONLY } from "../../data/menu";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { MenuItem, TOPPINGS_ONLY } from "../../data/menu";
+
+function chunk<T>(items: T[], size: number): T[][] {
+  const pages: T[][] = [];
+  for (let i = 0; i < items.length; i += size) pages.push(items.slice(i, i + size));
+  return pages;
+}
+
+function ToppingTile({ t }: { t: MenuItem }) {
+  return (
+    <div
+      className="pd-hover-card"
+      style={{
+        width: 170,
+        background: "var(--color-bg-surface)",
+        border: "1px solid var(--color-border-subtle)",
+        borderRadius: "var(--radius-card)",
+        padding: "var(--space-3)",
+        display: "flex",
+        flexDirection: "column",
+        gap: "var(--space-2)",
+        alignItems: "center",
+        textAlign: "center",
+        boxShadow: "0 10px 20px rgba(15,5,6,0.35)",
+        transition: "transform .22s cubic-bezier(.22,1,.36,1),border-color .22s ease,box-shadow .22s ease",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          height: 130,
+          flex: "0 0 130px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+        }}
+      >
+        <img
+          src={t.image}
+          alt={t.name}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            filter: "drop-shadow(0 12px 14px rgba(15,5,6,0.6))",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          fontFamily: "var(--font-ui)",
+          fontWeight: 700,
+          fontSize: "var(--text-sm)",
+          color: "var(--color-text-primary)",
+          lineHeight: 1.2,
+        }}
+      >
+        {t.name}
+      </div>
+      <div
+        style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "var(--text-sm)",
+          color: "var(--color-accent-primary)",
+          letterSpacing: "0.04em",
+        }}
+      >
+        {t.price}
+      </div>
+    </div>
+  );
+}
+
+const PAGES = chunk(TOPPINGS_ONLY, 4);
 
 export function Toppings() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [activePage, setActivePage] = useState(0);
+
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const page = Math.round(el.scrollLeft / el.clientWidth);
+      setActivePage((prev) => (prev === page ? prev : page));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const goToPage = (i: number) => {
+    const el = trackRef.current;
+    if (!el) return;
+    el.scrollTo({ left: i * el.clientWidth, behavior: "smooth" });
+  };
+
   return (
     <section
       id="sec-toppings"
@@ -73,71 +170,35 @@ export function Toppings() {
             Lo que le tires arriba define tu pancho. Estos son todos los que tenemos en la barra.
           </p>
         </div>
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "var(--space-gap-grid)" }}>
+
+        {/* Desktop (>1024px): grid que se acomoda solo */}
+        <div className="pd-toppings-grid-desktop">
           {TOPPINGS_ONLY.map((t) => (
-            <div
-              key={t.name}
-              className="pd-hover-card"
-              style={{
-                width: 170,
-                background: "var(--color-bg-surface)",
-                border: "1px solid var(--color-border-subtle)",
-                borderRadius: "var(--radius-card)",
-                padding: "var(--space-3)",
-                display: "flex",
-                flexDirection: "column",
-                gap: "var(--space-2)",
-                alignItems: "center",
-                textAlign: "center",
-                boxShadow: "0 10px 20px rgba(15,5,6,0.35)",
-                transition: "transform .22s cubic-bezier(.22,1,.36,1),border-color .22s ease,box-shadow .22s ease",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: 130,
-                  flex: "0 0 130px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  overflow: "hidden",
-                }}
-              >
-                <img
-                  src={t.image}
-                  alt={t.name}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "contain",
-                    filter: "drop-shadow(0 12px 14px rgba(15,5,6,0.6))",
-                  }}
-                />
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-ui)",
-                  fontWeight: 700,
-                  fontSize: "var(--text-sm)",
-                  color: "var(--color-text-primary)",
-                  lineHeight: 1.2,
-                }}
-              >
-                {t.name}
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: "var(--text-sm)",
-                  color: "var(--color-accent-primary)",
-                  letterSpacing: "0.04em",
-                }}
-              >
-                {t.price}
-              </div>
-            </div>
+            <ToppingTile key={t.name} t={t} />
           ))}
+        </div>
+
+        {/* Mobile/tablet (<=1024px): carrusel de a 4 con paginado por swipe */}
+        <div className="pd-toppings-carousel">
+          <div className="pd-toppings-track" ref={trackRef}>
+            {PAGES.map((page, i) => (
+              <div className="pd-toppings-page" key={i}>
+                {page.map((t) => (
+                  <ToppingTile key={t.name} t={t} />
+                ))}
+              </div>
+            ))}
+          </div>
+          <div className="pd-toppings-dots">
+            {PAGES.map((_, i) => (
+              <button
+                key={i}
+                className={`pd-dot${i === activePage ? " pd-dot-active" : ""}`}
+                onClick={() => goToPage(i)}
+                aria-label={`Página ${i + 1} de toppings`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
