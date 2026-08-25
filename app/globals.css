@@ -320,7 +320,6 @@ a:hover {
 .pd-toppings-track,
 .pd-toppings-track-desktop {
   display: flex;
-  align-items: flex-start;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
@@ -332,6 +331,7 @@ a:hover {
 
 .pd-toppings-track {
   scroll-snap-type: x mandatory;
+  align-items: flex-start;
 }
 
 .pd-toppings-page {
@@ -371,7 +371,6 @@ a:hover {
   scroll-snap-align: start;
   display: flex;
   justify-content: center;
-  align-items: stretch;
   gap: var(--space-gap-grid);
   padding: 0 var(--space-1);
 }

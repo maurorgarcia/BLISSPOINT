@@ -24,7 +24,6 @@ function ToppingTile({ t }: { t: MenuItem }) {
         gap: "var(--space-2)",
         alignItems: "center",
         textAlign: "center",
-        height: "100%",
         boxShadow: "0 10px 20px rgba(15,5,6,0.35)",
         transition: "transform .22s cubic-bezier(.22,1,.36,1),border-color .22s ease,box-shadow .22s ease",
       }}
@@ -70,8 +69,7 @@ function ToppingTile({ t }: { t: MenuItem }) {
           fontSize: "var(--text-sm)",
           color: "var(--color-accent-primary)",
           letterSpacing: "0.04em",
-          marginTop: "auto",
-        }}
+        }}}
       >
         {t.price}
       </div>
