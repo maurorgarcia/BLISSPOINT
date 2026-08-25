@@ -341,7 +341,7 @@ a:hover {
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-gap-grid);
   justify-items: center;
-  align-items: start;
+  align-items: stretch;
   align-content: start;
   padding: 0 var(--space-1);
 }
@@ -371,7 +371,7 @@ a:hover {
   scroll-snap-align: start;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: stretch;
   gap: var(--space-gap-grid);
   padding: 0 var(--space-1);
 }
