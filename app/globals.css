@@ -1,43 +1,39 @@
 :root {
-  /* Marca */
-  --color-yellow-500: #f5c242;
-  --color-yellow-400: #f7ce66;
-  --color-yellow-600: #d9a82f;
-  --color-bordeaux-700: #8b1a26;
-  --color-bordeaux-600: #a3242f;
-  --color-bordeaux-800: #6e141d;
-  --color-brick-900: #2b0900;
-  --color-nearblack-950: #1f0a0c;
-  --color-paper-100: #f7f3ea;
-  --color-paper-200: #ede6d6;
-  /* Neutros sobre fondo oscuro */
-  --color-offwhite-50: #f7f3ea;
-  --color-offwhite-200: #c9c0b0;
-  --color-neutral-800: #34191c;
-  --color-neutral-700: #4a2529;
+  /* Marca — Bliss Point */
+  --color-green-lime: #CEF249;
+  --color-green-soft: #BFD962;
+  --color-green-olive: #778C4A;
+  --color-green-olive-dark: #6A7E3F;
+  --color-green-olive-darker: #5A6B35;
+  --color-black: #0D0D0D;
+  --color-black-soft: #1A1A1A;
+  --color-black-softer: #262626;
+  --color-bone-white: #F2F2F2;
+  --color-bone-white-muted: #E0E0E0;
+  --color-gray-muted: #CCCCCC;
   /* Estado */
   --color-red-500: #ef4444;
   --color-green-500: #22c55e;
 
   /* Semánticos */
-  --color-bg-base: var(--color-nearblack-950);
-  --color-bg-surface: var(--color-neutral-800);
-  --color-bg-product-block: var(--color-brick-900);
-  --color-bg-panel: var(--color-paper-100);
-  --color-border-subtle: var(--color-neutral-700);
+  --color-bg-base: var(--color-black);
+  --color-bg-surface: var(--color-black-soft);
+  --color-bg-product-block: var(--color-black-softer);
+  --color-bg-panel: var(--color-bone-white);
+  --color-border-subtle: var(--color-black-softer);
 
-  --color-text-primary: var(--color-offwhite-50);
-  --color-text-secondary: var(--color-offwhite-200);
-  --color-text-on-panel: var(--color-nearblack-950);
-  --color-text-on-accent: var(--color-nearblack-950);
-  --color-text-on-secondary: var(--color-text-primary);
+  --color-text-primary: var(--color-bone-white);
+  --color-text-secondary: var(--color-gray-muted);
+  --color-text-on-panel: var(--color-black);
+  --color-text-on-accent: var(--color-black);
+  --color-text-on-secondary: var(--color-bone-white);
 
-  --color-accent-primary: var(--color-yellow-500);
-  --color-accent-primary-hover: var(--color-yellow-400);
-  --color-accent-primary-active: var(--color-yellow-600);
-  --color-accent-secondary: var(--color-bordeaux-700);
-  --color-accent-secondary-hover: var(--color-bordeaux-600);
-  --color-accent-secondary-active: var(--color-bordeaux-800);
+  --color-accent-primary: var(--color-green-lime);
+  --color-accent-primary-hover: var(--color-green-soft);
+  --color-accent-primary-active: var(--color-green-olive);
+  --color-accent-secondary: var(--color-green-olive);
+  --color-accent-secondary-hover: var(--color-green-olive-dark);
+  --color-accent-secondary-active: var(--color-green-olive-darker);
 
   --color-status-error: var(--color-red-500);
   --color-status-success: var(--color-green-500);
@@ -112,7 +108,7 @@
 
   --z-base: 0;
   --z-card-hover: 1;
-  --z-mascot: 20;
+
   --z-nav-sticky: 30;
   --z-modal-overlay: 40;
   --z-modal-content: 50;
@@ -210,7 +206,7 @@ a:hover {
 
 .pd-scroll-cue:hover .pd-scroll-circle {
   border-color: var(--color-accent-primary);
-  background: rgba(245, 194, 66, 0.12);
+  background: rgba(206, 242, 73, 0.12);
 }
 
 .pd-scroll-cue:hover .pd-scroll-label {
@@ -283,15 +279,20 @@ a:hover {
   }
   .pd-order-title {
     order: 1;
+    text-align: center;
   }
   .pd-order-paragraph {
     order: 2;
+    text-align: center;
+    max-width: 100%;
   }
   .pd-order-image {
     order: 3;
   }
   .pd-order-button {
     order: 4;
+    display: flex;
+    justify-content: center;
   }
 }
 
@@ -394,21 +395,22 @@ a:hover {
   transform: scale(1.3);
 }
 
-/* 3) "Hola, soy el Doto": grid de 3 columnas -> apilado en mobile/tablet */
-.pd-mascota-grid {
-  max-width: 1280px;
+/* 3) "Nosotros": grid de 2 columnas -> apilado en mobile/tablet */
+.pd-nosotros-grid {
+  max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: minmax(180px, 1fr) minmax(280px, 1.4fr) minmax(180px, 1fr);
+  grid-template-columns: minmax(220px, 1fr) minmax(280px, 1.2fr);
   align-items: center;
   justify-items: center;
-  gap: var(--space-6);
+  gap: var(--space-10);
 }
 
 @media (max-width: 767px) {
-  .pd-mascota-grid {
+  .pd-nosotros-grid {
     grid-template-columns: 1fr;
     text-align: center;
+    gap: var(--space-6);
   }
 }
 
@@ -425,3 +427,24 @@ a:hover {
     text-align: center;
   }
 }
+
+/* Navbar scrolleable solo en mobile */
+@media (max-width: 767px) {
+  .pd-tab-track {
+    justify-content: center !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-inline: 50% !important;
+  }
+  .pd-tab-track::-webkit-scrollbar {
+    display: none;
+  }
+  .pd-tab-item {
+    scroll-snap-align: center;
+  }
+}
+
+

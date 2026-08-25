@@ -75,19 +75,19 @@ export function Hero({
           inset: 0,
           zIndex: -1,
           background:
-            "radial-gradient(120% 80% at 50% 40%,rgba(31,10,12,0.55),rgba(31,10,12,0.92) 75%),linear-gradient(180deg,rgba(139,26,38,0.35),rgba(31,10,12,0.9))",
+            "radial-gradient(120% 80% at 50% 40%,rgba(13,13,13,0.55),rgba(13,13,13,0.92) 75%),linear-gradient(180deg,rgba(119,140,74,0.35),rgba(13,13,13,0.9))",
         }}
       />
       <img
         src="/assets/brand/logo.png"
-        alt="Pancho Doto"
+        alt="Bliss Point"
         style={{
-          width: "min(320px,58vw,32vh)",
+          width: "min(560px,85vw,56vh)",
           height: "auto",
           flexShrink: 1,
           minHeight: 0,
           objectFit: "contain",
-          filter: "drop-shadow(0 24px 40px rgba(15,5,6,0.7))",
+          filter: "drop-shadow(0 32px 56px rgba(13,13,13,0.8))",
           animation: "pdBob 6s ease-in-out infinite",
         }}
       />
@@ -95,12 +95,12 @@ export function Hero({
         style={{
           fontFamily: "var(--font-playful)",
           fontSize: "var(--text-xl)",
-          color: "var(--color-offwhite-50)",
+          color: "var(--color-text-primary)",
           maxWidth: "34ch",
           lineHeight: "var(--leading-snug)",
         }}
       >
-        Panchos gourmet desde 1999. Armalo como se te cante.
+        El punto justo para disfrutar algo rico.
       </div>
       <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", justifyContent: "center" }}>
         <Button variant="pedidosya" size="lg" onClick={onOpenPedidosYa}>
@@ -126,7 +126,7 @@ export function Hero({
         <span
           className="pd-scroll-label"
           style={{
-            color: "var(--color-offwhite-200)",
+            color: "var(--color-text-secondary)",
             fontSize: "var(--text-xs)",
             fontWeight: 700,
             letterSpacing: "0.18em",
@@ -134,7 +134,7 @@ export function Hero({
             transition: "color var(--motion-duration-microfeedback) var(--motion-ease-ui)",
           }}
         >
-          Tu pancho te espera!
+          Algo rico te espera!
         </span>
         <div
           className="pd-scroll-circle"

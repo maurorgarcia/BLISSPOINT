@@ -44,7 +44,7 @@ export const CATS: Record<BarCategory, MenuItem[]> = {
     { name: "Chimichurri", image: "/assets/toppings/chimichurri.png", price: "libre" },
     { name: "Ketchup", image: "/assets/toppings/mayonesas.png", price: "libre" },
     { name: "Mostaza", image: "/assets/toppings/mayonesas.png", price: "libre" },
-    { name: "Picante Doto", image: "/assets/toppings/chimichurri.png", price: "libre" },
+    { name: "Picante Bliss", image: "/assets/toppings/chimichurri.png", price: "libre" },
   ],
   Extras: [
     { name: "Cono de papas", image: "/assets/products/cono-papas-marca.png", price: "$2.800" },
@@ -82,7 +82,7 @@ export const TOPPINGS_ONLY: MenuItem[] = [
 
 export const COMBOS: Combo[] = [
   {
-    title: "COMBO DOTO",
+    title: "COMBO BLISS",
     tag: "El más pedido",
     note: "para uno",
     desc: "Pancho clásico + cono de papas + Coca 500ml.",
@@ -106,7 +106,7 @@ export const COMBOS: Combo[] = [
     image: "/assets/products/pancho-clasico.webp",
   },
   {
-    title: "POST BOLICHE",
+    title: "PUNTO DOBLE",
     tag: "Para compartir",
     note: "para dos",
     desc: "Dos panchos, cono grande de papas y dos latas.",
@@ -119,29 +119,13 @@ const embed = (q: string) => `https://maps.google.com/maps?q=${encodeURIComponen
 
 export const LOCATIONS: Location[] = [
   {
-    city: "San Nicolás",
-    address: "Italia 17",
-    hours: "Lun a Jue 11 a 24hs · Vie y Sáb 11 a 7hs",
-    whatsapp: "https://wa.me/5493364000000",
-    maps: "https://maps.google.com/?q=Italia+17+San+Nicolás+de+los+Arroyos",
-    embed: embed("Italia 17, San Nicolás de los Arroyos, Buenos Aires"),
-  },
-  {
-    city: "San Nicolás",
-    address: "Mitre 337",
-    hours: "Lun a Jue 18 a 24hs · Vie a Dom 18 a 7hs",
-    whatsapp: "https://wa.me/5493364000000",
-    maps: "https://maps.google.com/?q=Mitre+337+San+Nicolás+de+los+Arroyos",
-    embed: embed("Bartolomé Mitre 337, San Nicolás de los Arroyos, Buenos Aires"),
-  },
-  {
-    city: "Villa Constitución",
-    address: "Av. San Martín 739",
-    hours: "Lun a Jue 18 a 24hs · Vie a Dom 18 a 7hs",
-    whatsapp: "https://wa.link/h4f5w7",
-    maps: "https://maps.google.com/?q=Av.+San+Martín+739+Villa+Constitución",
-    embed: embed("Av. San Martín 739, Villa Constitución, Santa Fe"),
-    note: "Foodtruck para eventos · Envíos por @yendoapp",
+    city: "San Nicolás de los Arroyos",
+    address: "Bartolomé Mitre 133",
+    hours: "Lun a Jue 11 a 24hs · Vie y Sáb 11 a 7hs · Dom 18 a 24hs",
+    whatsapp: "https://l.instagram.com/?u=https%3A%2F%2Fwa.link%2Fe9pr7p%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAcGRvZgJleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAaflQuZH8BXZ34T5c3EcuBsZc-5AP7yQa2-YjJw6_mOVHZxk84XN1UCTf8cF0g_aem_h8If6LbwAJKiBFSUIB7MdA&e=AUCIYuQmGaqDl3_19u7iwrHr3tLIoGBkd20-QUH5SAm5pRZQ17x6GtGTdJ--L26dIL-2vY0CYOwpEiGIH6mUhNXd-RPFLs0VBj4k4V3nsjTx6sZ_eYerWYqs3xHzteJnvr71B74",
+    maps: "https://maps.google.com/?q=Bartolomé+Mitre+133+San+Nicolás+de+los+Arroyos",
+    embed: embed("Bartolomé Mitre 133, San Nicolás de los Arroyos, Buenos Aires"),
+    note: "Consumo en el local · Pedidos para llevar",
   },
 ];
 
@@ -153,6 +137,6 @@ export const SECTION_IDS: Record<Tab, string> = {
   "La barra": "sec-barra",
   Toppings: "sec-toppings",
   Combos: "sec-combos",
-  Nosotros: "sec-mascota",
+  Nosotros: "sec-nosotros",
   Sucursales: "sec-sucursales",
 };

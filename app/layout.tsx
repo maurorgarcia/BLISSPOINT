@@ -29,10 +29,22 @@ const baloo2 = Baloo_2({
 });
 
 export const metadata: Metadata = {
-  title: "Pancho Doto | Menú Digital",
+  title: "Bliss Point | Menú Digital",
   description:
-    "Panchos gourmet desde 1999. Armá el tuyo con hasta 4 toppings de la barra. San Nicolás de los Arroyos y Villa Constitución.",
-  icons: { icon: "/assets/brand/logo.png" },
+    "El punto justo para disfrutar algo rico. Panchos, hamburguesas, papas y bebidas. Bartolomé Mitre 133, San Nicolás de los Arroyos, Buenos Aires.",
+  icons: {
+    icon: [
+      { url: "/assets/favicon/favicon.ico", sizes: "any" },
+      { url: "/assets/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/assets/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/assets/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/assets/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/assets/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/assets/favicon/favicon.ico"],
+  },
+  manifest: "/assets/favicon/site.webmanifest",
+  themeColor: "#0D0D0D",
 };
 
 const fontVars = {

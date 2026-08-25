@@ -31,7 +31,7 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
           position: "absolute",
           inset: 0,
           zIndex: -1,
-          background: "radial-gradient(70% 55% at 50% 45%,rgba(139,26,38,0.45),transparent 70%)",
+          background: "radial-gradient(70% 55% at 50% 45%,rgba(119,140,74,0.45),transparent 70%)",
         }}
       />
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
@@ -222,9 +222,9 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
               textWrap: "balance",
             }}
           >
-            ARMÁ TU PANCHO
+            ARMÁ TU
             <br />
-            <span style={{ color: "var(--color-accent-primary)" }}>COMO QUIERAS</span>
+            <span style={{ color: "var(--color-accent-primary)" }}>PANCHO PERFECTO</span>
           </div>
           <p
             className="pd-order-paragraph"
@@ -237,12 +237,11 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
               textWrap: "pretty",
             }}
           >
-            Pan, salchicha y hasta 4 toppings de la barra. Vos elegís todo, nosotros lo armamos al
-            toque.
+            Pan, salchicha y hasta 4 toppings de la barra. Consumo en el local o para llevar. El punto justo para disfrutar algo rico.
           </p>
           <div className="pd-order-button">
             <Button variant="primary" size="lg" onClick={onGoToppings}>
-              Rellenalo como quieras ↓
+              Elegí tus toppings ↓
             </Button>
           </div>
         </div>
@@ -295,12 +294,12 @@ export function ElPancho({ onGoToppings }: { onGoToppings: () => void }) {
             </div>
             <img
               src="/assets/products/pancho-clasico.webp"
-              alt="Pancho Doto armado"
+              alt="Pancho Bliss Point armado"
               style={{
                 width: "min(520px,84vw)",
                 height: "auto",
                 animation: "pdBob 5s ease-in-out infinite",
-                filter: "drop-shadow(0 40px 34px rgba(15,5,6,0.75))",
+                filter: "drop-shadow(0 40px 34px rgba(13,13,13,0.75))",
               }}
             />
           </div>

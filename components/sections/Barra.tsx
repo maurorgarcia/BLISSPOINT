@@ -67,7 +67,7 @@ export function Barra({
                 textWrap: "pretty",
               }}
             >
-              Pan, salchicha, salsas y extras para completar tu pancho.
+              Pan, salchicha, salsas y extras para completar tu pedido como quieras.
             </p>
           </div>
         </div>

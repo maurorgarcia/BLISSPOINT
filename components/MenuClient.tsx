@@ -6,7 +6,7 @@ import { ElPancho } from "./sections/ElPancho";
 import { Toppings } from "./sections/Toppings";
 import { Barra } from "./sections/Barra";
 import { Combos } from "./sections/Combos";
-import { Mascota } from "./sections/Mascota";
+import { Nosotros } from "./sections/Nosotros";
 import { Sucursales } from "./sections/Sucursales";
 import { Footer } from "./sections/Footer";
 import { TabNav } from "./ui/TabNav";
@@ -88,7 +88,7 @@ export function MenuClient() {
       <Toppings />
       <Barra cat={cat} onSelectCat={setCat} />
       <Combos onOpenPedidosYa={openPedidosYa} />
-      <Mascota onGoSucursales={goSucursales} />
+      <Nosotros onGoSucursales={goSucursales} />
       <Sucursales />
       <Footer onOpenPedidosYa={openPedidosYa} />
 

@@ -17,7 +17,7 @@ export function Sucursales() {
             lineHeight: 1,
           }}
         >
-          ENCONTRÁ TU DOTO MÁS CERCA
+          VENÍ A VISITARNOS
         </div>
         <p
           style={{
@@ -27,7 +27,7 @@ export function Sucursales() {
             fontSize: "var(--text-lg)",
           }}
         >
-          Tres puntos y un foodtruck que va a donde lo llames.
+          Te esperamos en Bartolomé Mitre 133, San Nicolás de los Arroyos.
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(270px,1fr))", gap: "var(--space-gap-grid)" }}>
           {LOCATIONS.map((loc, i) => (
@@ -97,12 +97,12 @@ export function Sucursales() {
                 <i className="ph-fill ph-map-pin" style={{ color: "var(--color-accent-secondary)", fontSize: 20 }} />
                 {loc.address}
               </div>
-              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529" }}>
+              <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "var(--color-text-on-panel)" }}>
                 <i className="ph-fill ph-clock" style={{ color: "var(--color-accent-secondary)", fontSize: 16, marginTop: 2, flexShrink: 0 }} />
                 {loc.hours}
               </div>
               {loc.note ? (
-                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "#4A2529", opacity: 0.75 }}>
+                <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "var(--text-sm)", lineHeight: "var(--leading-snug)", color: "var(--color-text-on-panel)", opacity: 0.75 }}>
                   <i className="ph-fill ph-moped" style={{ color: "var(--color-accent-secondary)", fontSize: 16, marginTop: 2, flexShrink: 0 }} />
                   {loc.note}
                 </div>
@@ -136,7 +136,7 @@ export function Sucursales() {
                     display: "inline-flex",
                     alignItems: "center",
                     gap: 6,
-                    background: "var(--color-yellow-600)",
+                    background: "var(--color-accent-primary-active)",
                     border: "none",
                     color: "var(--color-text-on-accent)",
                     fontFamily: "var(--font-ui)",
@@ -152,45 +152,6 @@ export function Sucursales() {
               </div>
             </div>
           ))}
-        </div>
-        <div
-          style={{
-            marginTop: "var(--space-8)",
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--space-6)",
-            flexWrap: "wrap",
-            background: "var(--color-bg-surface)",
-            border: "1px solid var(--color-border-subtle)",
-            borderRadius: "var(--radius-card)",
-            padding: "var(--space-6)",
-          }}
-        >
-          <img src="/assets/mascot/mascot-eating.png" alt="Mascota Pancho Doto" style={{ width: 110, height: "auto" }} />
-          <div style={{ flex: 1, minWidth: 220 }}>
-            <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-2xl)", color: "var(--color-text-primary)" }}>
-              FOODTRUCK PARA EVENTOS
-            </div>
-            <p style={{ margin: "var(--space-2) 0 var(--space-3) 0", color: "var(--color-text-secondary)" }}>
-              Cumples, casamientos, egresados. Llevamos la panche a donde estés.
-            </p>
-            <a
-              href="https://wa.me/5493364000000"
-              target="_blank"
-              rel="noopener"
-              style={{
-                display: "inline-block",
-                background: "var(--color-accent-secondary)",
-                color: "#fff",
-                fontFamily: "var(--font-ui)",
-                fontWeight: 700,
-                padding: "12px 24px",
-                borderRadius: "var(--radius-full)",
-              }}
-            >
-              Consultar por el foodtruck
-            </a>
-          </div>
         </div>
       </div>
     </section>

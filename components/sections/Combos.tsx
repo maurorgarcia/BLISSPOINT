@@ -58,11 +58,11 @@ export function Combos({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
                 display: "flex",
                 flexDirection: "column",
                 background:
-                  "linear-gradient(170deg,var(--color-bordeaux-700) 0%,var(--color-neutral-800) 46%,var(--color-nearblack-950) 100%)",
+                  "linear-gradient(170deg,var(--color-green-olive) 0%,var(--color-black-soft) 46%,var(--color-black) 100%)",
                 border: "1px solid var(--color-border-subtle)",
                 borderRadius: "var(--radius-card)",
                 padding: "var(--space-6) var(--space-5) var(--space-5)",
-                boxShadow: "0 20px 40px rgba(15,5,6,0.55)",
+                boxShadow: "0 20px 40px rgba(13,13,13,0.55)",
                 transition: "transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s ease,border-color .28s ease",
                 animation: "pdReveal .7s both",
                 animationTimeline: "view()",
@@ -108,7 +108,7 @@ export function Combos({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
                     width: "78%",
                     height: "78%",
                     borderRadius: "50%",
-                    background: "radial-gradient(circle,rgba(245,194,66,0.28),transparent 68%)",
+                    background: "radial-gradient(circle,rgba(206,242,73,0.28),transparent 68%)",
                   }}
                 />
                 <img
@@ -119,7 +119,7 @@ export function Combos({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
                     width: "100%",
                     height: "100%",
                     objectFit: "contain",
-                    filter: "drop-shadow(0 30px 26px rgba(15,5,6,0.85))",
+                    filter: "drop-shadow(0 30px 26px rgba(13,13,13,0.85))",
                   }}
                 />
               </div>

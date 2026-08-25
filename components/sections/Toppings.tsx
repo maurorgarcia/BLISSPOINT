@@ -198,7 +198,7 @@ export function Toppings() {
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(80% 60% at 50% 0%,rgba(139,26,38,0.5),transparent 70%),linear-gradient(180deg,rgba(43,9,0,0.65),rgba(43,9,0,0.9))",
+            "radial-gradient(80% 60% at 50% 0%,rgba(119,140,74,0.5),transparent 70%),linear-gradient(180deg,rgba(38,38,38,0.65),rgba(13,13,13,0.9))",
         }}
       />
       <div style={{ maxWidth: 1150, margin: "0 auto", position: "relative" }}>
@@ -219,7 +219,7 @@ export function Toppings() {
               letterSpacing: "0.04em",
             }}
           >
-            Hasta 4 por pancho
+            Hasta 4 por pedido
           </div>
           <div
             style={{
@@ -241,7 +241,7 @@ export function Toppings() {
               textWrap: "pretty",
             }}
           >
-            Lo que le tires arriba define tu pancho. Estos son todos los que tenemos en la barra.
+            Lo que elijas arriba define tu experiencia. Estos son todos los toppings que tenemos en la barra para disfrutar algo rico.
           </p>
         </div>
 

@@ -21,9 +21,9 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
         }}
       >
         <div className="pd-footer-col" style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-          <img src="/assets/brand/logo.png" alt="Pancho Doto" style={{ width: 110, height: "auto" }} />
+          <img src="/assets/brand/logo.png" alt="Bliss Point" style={{ width: 160, height: "auto" }} />
           <div style={{ fontFamily: "var(--font-playful)", color: "var(--color-text-secondary)", fontSize: "var(--text-sm)", maxWidth: "26ch" }}>
-            Los panchos del barrio, desde 1999.
+            Bliss Point — el punto justo para disfrutar algo rico.
           </div>
         </div>
         <div className="pd-footer-col" style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
@@ -42,11 +42,14 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
           <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", color: "var(--color-accent-primary)" }}>
             CONTACTO
           </div>
-          <a href="https://wa.me/5493364000000" target="_blank" rel="noopener" style={{ fontSize: "var(--text-sm)" }}>
+          <a href="https://l.instagram.com/?u=https%3A%2F%2Fwa.link%2Fe9pr7p%3Futm_source%3Dig%26utm_medium%3Dsocial%26utm_content%3Dlink_in_bio%26fbclid%3DPAcGRvZgJleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA85MzY2MTk3NDMzOTI0NTkAAaflQuZH8BXZ34T5c3EcuBsZc-5AP7yQa2-YjJw6_mOVHZxk84XN1UCTf8cF0g_aem_h8If6LbwAJKiBFSUIB7MdA&e=AUCIYuQmGaqDl3_19u7iwrHr3tLIoGBkd20-QUH5SAm5pRZQ17x6GtGTdJ--L26dIL-2vY0CYOwpEiGIH6mUhNXd-RPFLs0VBj4k4V3nsjTx6sZ_eYerWYqs3xHzteJnvr71B74" target="_blank" rel="noopener" style={{ fontSize: "var(--text-sm)" }}>
             WhatsApp pedidos
           </a>
-          <a href="https://instagram.com/panchodotosan_nicolas" target="_blank" rel="noopener" style={{ fontSize: "var(--text-sm)" }}>
-            @panchodotosan_nicolas
+          <a href="https://www.instagram.com/blisspoint.sn/" target="_blank" rel="noopener" style={{ fontSize: "var(--text-sm)" }}>
+            @blisspoint.sn
+          </a>
+          <a href="https://www.facebook.com/BlissPointSNpancheria/" target="_blank" rel="noopener" style={{ fontSize: "var(--text-sm)" }}>
+            Bliss Point SN
           </a>
         </div>
         <div className="pd-footer-col" style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
@@ -69,7 +72,7 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
           fontSize: "var(--text-xs)",
         }}
       >
-        Pancho Doto · San Nicolás de los Arroyos · Villa Constitución
+        Bliss Point · Bartolomé Mitre 133 · San Nicolás de los Arroyos, Buenos Aires
       </div>
     </footer>
   );
