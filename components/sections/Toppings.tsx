@@ -69,7 +69,7 @@ function ToppingTile({ t }: { t: MenuItem }) {
           fontSize: "var(--text-sm)",
           color: "var(--color-accent-primary)",
           letterSpacing: "0.04em",
-        }}}
+        }}
       >
         {t.price}
       </div>
