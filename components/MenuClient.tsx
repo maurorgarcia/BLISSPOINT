@@ -7,7 +7,6 @@ import { Toppings } from "./sections/Toppings";
 import { Barra } from "./sections/Barra";
 import { Combos } from "./sections/Combos";
 import { Nosotros } from "./sections/Nosotros";
-import { Sucursales } from "./sections/Sucursales";
 import { Footer } from "./sections/Footer";
 import { TabNav } from "./ui/TabNav";
 import { Modal } from "./ui/Modal";
@@ -65,7 +64,6 @@ export function MenuClient() {
   const closePedidosYa = () => setPedidosYaOpen(false);
   const goMenu = () => scrollTo("sec-pancho");
   const goToppings = () => scrollTo("sec-toppings");
-  const goSucursales = () => scrollTo("sec-sucursales");
 
   return (
     <div style={{ background: "var(--color-bg-base)", fontFamily: "var(--font-ui)", overflowX: "clip" }}>
@@ -88,8 +86,7 @@ export function MenuClient() {
       <Toppings />
       <Barra cat={cat} onSelectCat={setCat} />
       <Combos onOpenPedidosYa={openPedidosYa} />
-      <Nosotros onGoSucursales={goSucursales} />
-      <Sucursales />
+      <Nosotros />
       <Footer onOpenPedidosYa={openPedidosYa} />
 
       <Modal

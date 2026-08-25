@@ -129,7 +129,7 @@ export const LOCATIONS: Location[] = [
   },
 ];
 
-export const TABS = ["El pancho", "Toppings", "La barra", "Combos", "Nosotros", "Sucursales"] as const;
+export const TABS = ["El pancho", "Toppings", "La barra", "Combos", "Nosotros"] as const;
 export type Tab = (typeof TABS)[number];
 
 export const SECTION_IDS: Record<Tab, string> = {
@@ -138,5 +138,4 @@ export const SECTION_IDS: Record<Tab, string> = {
   Toppings: "sec-toppings",
   Combos: "sec-combos",
   Nosotros: "sec-nosotros",
-  Sucursales: "sec-sucursales",
 };
