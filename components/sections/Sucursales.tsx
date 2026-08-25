@@ -8,31 +8,9 @@ export function Sucursales() {
       style={{
         padding: "var(--space-24) var(--space-4)",
         background: "linear-gradient(165deg,var(--color-green-olive),var(--color-green-olive-dark) 42%,var(--color-green-olive-darker) 78%,var(--color-black))",
-        position: "relative",
-        overflow: "hidden",
       }}
     >
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: "url(/assets/backgrounds/hero-banner.png)",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.14,
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "radial-gradient(80% 55% at 50% 0%,rgba(206,242,73,0.22),transparent 62%),linear-gradient(180deg,rgba(119,140,74,0.35),rgba(13,13,13,0.45))",
-          pointerEvents: "none",
-        }}
-      />
-      <div style={{ maxWidth: 1150, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 1150, margin: "0 auto" }}>
         <div
           style={{
             textAlign: "center",
