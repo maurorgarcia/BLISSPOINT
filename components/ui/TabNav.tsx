@@ -20,14 +20,25 @@ export function TabNav({
       if (!mq.matches) return;
       const scrollEl = scrollRef.current;
       const btn = btnRefs.current[active];
-      if (scrollEl && btn) {
-        const targetLeft =
-          btn.offsetLeft - scrollEl.clientWidth / 2 + btn.offsetWidth / 2;
-        scrollEl.scrollTo({ left: Math.max(0, targetLeft), behavior: "smooth" });
+      if (!scrollEl || !btn) return;
+
+      const index = tabs.indexOf(active);
+      if (index <= 0) {
+        scrollEl.scrollTo({ left: 0, behavior: "smooth" });
+        return;
       }
+
+      const btnRect = btn.getBoundingClientRect();
+      const trackRect = scrollEl.getBoundingClientRect();
+      const delta = btnRect.left - trackRect.left - (trackRect.width - btnRect.width) / 2;
+      const max = Math.max(0, scrollEl.scrollWidth - scrollEl.clientWidth);
+      scrollEl.scrollTo({
+        left: Math.min(max, Math.max(0, scrollEl.scrollLeft + delta)),
+        behavior: "smooth",
+      });
     };
     run();
-  }, [active]);
+  }, [active, tabs]);
 
   return (
     <nav
@@ -50,7 +61,6 @@ export function TabNav({
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
           gap: "var(--space-2)",
           paddingInline: "var(--space-4)",
           maxWidth: "1100px",
@@ -58,7 +68,7 @@ export function TabNav({
           margin: "0 auto",
         }}
       >
-        {tabs.map((tab, i) => {
+        {tabs.map((tab) => {
           const isActive = tab === active;
           return (
             <button
@@ -69,7 +79,6 @@ export function TabNav({
               onClick={() => onChange(tab)}
               className={`pd-tab-item ${isActive ? "pd-tab-active" : ""}`}
               style={{
-                scrollSnapAlign: i === 0 ? "start" : i === tabs.length - 1 ? "end" : "center",
                 flexShrink: 0,
                 fontFamily: "var(--font-ui)",
                 fontSize: "var(--text-sm)",
