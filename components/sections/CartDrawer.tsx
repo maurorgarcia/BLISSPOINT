@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
+import { useLockBodyScroll } from "../hooks/useLockBodyScroll";
 import {
   ORDER_SAUCES,
   ORDER_TOPPINGS,
@@ -341,6 +342,8 @@ export function CartDrawer({
     ORDER_TOPPINGS.find((t) => t.id === id)?.name;
 
   const meta = STEP_META[step];
+
+  useLockBodyScroll(open);
 
   const hasItems =
     hotDogs.length + beverages.length + fries.length > 0;

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
+import { useLockBodyScroll } from "../hooks/useLockBodyScroll";
 import {
   BEVERAGES,
   Beverage,
@@ -323,6 +324,8 @@ export function OrderModal({
 
   const stepLabels = isCombo ? STEP_LABELS_COMBO : STEP_LABELS;
   const label = stepLabels[step];
+
+  useLockBodyScroll(open);
 
   useEffect(() => {
     if (!open) {

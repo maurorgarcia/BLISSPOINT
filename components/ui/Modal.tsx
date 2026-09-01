@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { useLockBodyScroll } from "../hooks/useLockBodyScroll";
 
 export function Modal({
   open,
@@ -17,6 +18,8 @@ export function Modal({
   ctaLabel?: string;
   onCta?: () => void;
 }) {
+  useLockBodyScroll(open);
+
   if (!open) return null;
 
   return (
