@@ -4,13 +4,22 @@ export type MenuItem = {
   price: string;
 };
 
+export type ComboContent = {
+  hotDogVarietyId: string | null;
+  hotDogCount: number;
+  fries: { name: string; price: number; image: string; count: number } | null;
+  beverages: { beverageId: string; count: number }[];
+};
+
 export type Combo = {
   title: string;
   tag: string;
   note: string;
   desc: string;
   price: string;
+  priceNumber: number;
   image: string;
+  content: ComboContent;
 };
 
 export type Location = {
@@ -23,7 +32,189 @@ export type Location = {
   note?: string;
 };
 
-// Precios y datos marcados "a confirmar" son placeholders del brief original.
+export type HotDogVariety = {
+  id: string;
+  name: string;
+  price: number;
+  priceLabel: string;
+  image: string;
+};
+
+export type Sauce = {
+  id: string;
+  name: string;
+  image: string;
+};
+
+export type ToppingOption = {
+  id: string;
+  name: string;
+  image: string;
+};
+
+export type Beverage = {
+  id: string;
+  name: string;
+  price: number;
+  priceLabel: string;
+  image: string;
+};
+
+export type CartHotDog = {
+  id: string;
+  variety: HotDogVariety;
+  sauces: string[];
+  toppings: string[];
+  quantity: number;
+};
+
+export type CartBeverage = {
+  id: string;
+  beverage: Beverage;
+  quantity: number;
+};
+
+export type CartItem = CartHotDog | CartBeverage;
+
+export const HOT_DOG_VARIETIES: HotDogVariety[] = [
+  {
+    id: "super-pancho",
+    name: "Super pancho",
+    price: 5000,
+    priceLabel: "$5.000",
+    image: "/assets/products/pancho-clasico.webp",
+  },
+  {
+    id: "pancho-doble",
+    name: "Pancho doble",
+    price: 8500,
+    priceLabel: "$8.500",
+    image: "/assets/products/pancho-chili.webp",
+  },
+  {
+    id: "pancho-aleman",
+    name: "Pancho alemán",
+    price: 8500,
+    priceLabel: "$8.500",
+    image: "/assets/products/pancho-clasico.webp",
+  },
+  {
+    id: "pancho-parrillero",
+    name: "Pancho parrillero",
+    price: 7500,
+    priceLabel: "$7.500",
+    image: "/assets/products/pancho-chili.webp",
+  },
+  {
+    id: "pancho-veggie",
+    name: "Pancho veggie",
+    price: 7000,
+    priceLabel: "$7.000",
+    image: "/assets/products/pancho-clasico.webp",
+  },
+  {
+    id: "balde-panchos",
+    name: "Balde de panchos",
+    price: 14000,
+    priceLabel: "$14.000",
+    image: "/assets/products/pancho-chili.webp",
+  },
+];
+
+export const ORDER_SAUCES: Sauce[] = [
+  { id: "mayonesa", name: "Mayonesa", image: "/assets/toppings/mayonesas.png" },
+  { id: "ketchup", name: "Ketchup", image: "/assets/toppings/mayonesas.png" },
+  { id: "salsa-golf", name: "Salsa Golf", image: "/assets/toppings/mayonesas.png" },
+  { id: "mostaza", name: "Mostaza", image: "/assets/toppings/mayonesas.png" },
+  { id: "barbacoa", name: "Barbacoa", image: "/assets/toppings/chimichurri.png" },
+  { id: "muy-picante", name: "Muy picante", image: "/assets/toppings/chimichurri.png" },
+  { id: "roquefort", name: "Roquefort", image: "/assets/toppings/mayonesas.png" },
+  { id: "big-mac", name: "Big Mac", image: "/assets/toppings/mayonesas.png" },
+  { id: "tasty", name: "Tasty", image: "/assets/toppings/mayonesas.png" },
+  { id: "cheddar-salsa", name: "Cheddar", image: "/assets/toppings/mayonesas.png" },
+  { id: "nutella", name: "Nutella", image: "/assets/toppings/mayonesas.png" },
+  { id: "dulce-leche", name: "Dulce de Leche", image: "/assets/toppings/mayonesas.png" },
+];
+
+export const ORDER_TOPPINGS: ToppingOption[] = [
+  { id: "provenzal", name: "Provenzal", image: "/assets/toppings/chimichurri.png" },
+  { id: "criolla-picante", name: "Criolla picante", image: "/assets/toppings/chimichurri.png" },
+  { id: "aceitunas", name: "Aceitunas", image: "/assets/toppings/chimichurri.png" },
+  { id: "jamon-queso", name: "Jamon y queso", image: "/assets/toppings/mayonesas.png" },
+  { id: "panceta", name: "Panceta", image: "/assets/toppings/papas-fritas.png" },
+  { id: "verdeo", name: "Verdeo", image: "/assets/toppings/chimichurri.png" },
+  { id: "takis", name: "Takis", image: "/assets/toppings/papas-fritas.png" },
+  { id: "doritos", name: "Doritos", image: "/assets/toppings/papas-fritas.png" },
+  { id: "palta", name: "Palta", image: "/assets/toppings/mayonesas.png" },
+  { id: "huevo", name: "Huevo", image: "/assets/toppings/mayonesas.png" },
+  { id: "cebolla-caramelizada", name: "Cebolla caramelizada", image: "/assets/toppings/chimichurri.png" },
+  { id: "chimichurri", name: "Chimichurri", image: "/assets/toppings/chimichurri.png" },
+  { id: "criolla-champinones", name: "Criolla Champiñones", image: "/assets/toppings/chimichurri.png" },
+  { id: "choclo", name: "Choclo", image: "/assets/toppings/chimichurri.png" },
+  { id: "queso", name: "Queso", image: "/assets/toppings/mayonesas.png" },
+  { id: "gomitas", name: "Gomitas", image: "/assets/toppings/mayonesas.png" },
+  { id: "rocklers", name: "Rocklers", image: "/assets/toppings/papas-fritas.png" },
+];
+
+export const BEVERAGES: Beverage[] = [
+  {
+    id: "gaseosa-500",
+    name: "Gaseosa 500CC",
+    price: 2500,
+    priceLabel: "$2.500",
+    image: "/assets/beverages/coca-plastico.webp",
+  },
+  {
+    id: "lata-gaseosa",
+    name: "Lata de gaseosa",
+    price: 2000,
+    priceLabel: "$2.000",
+    image: "/assets/beverages/coca-vidrio.webp",
+  },
+  {
+    id: "agua-saborizada",
+    name: "Agua saborizada",
+    price: 2000,
+    priceLabel: "$2.000",
+    image: "/assets/beverages/coca-vidrio.webp",
+  },
+  {
+    id: "agua",
+    name: "Agua",
+    price: 2000,
+    priceLabel: "$2.000",
+    image: "/assets/beverages/coca-vidrio.webp",
+  },
+  {
+    id: "soda",
+    name: "Soda",
+    price: 2000,
+    priceLabel: "$2.000",
+    image: "/assets/beverages/coca-vidrio.webp",
+  },
+  {
+    id: "brahma",
+    name: "Lata de Brahma",
+    price: 3500,
+    priceLabel: "$3.500",
+    image: "/assets/beverages/stella-artois.png",
+  },
+  {
+    id: "los-andes",
+    name: "Lata de Los Andes",
+    price: 4000,
+    priceLabel: "$4.000",
+    image: "/assets/beverages/stella-artois.png",
+  },
+  {
+    id: "corona",
+    name: "Corona",
+    price: 5000,
+    priceLabel: "$5.000",
+    image: "/assets/beverages/stella-artois.png",
+  },
+];
+
 export const BAR_CATEGORIES = ["Pan", "Salchicha", "Salsas", "Extras"] as const;
 export type BarCategory = (typeof BAR_CATEGORIES)[number];
 
@@ -87,7 +278,19 @@ export const COMBOS: Combo[] = [
     note: "para uno",
     desc: "Pancho clásico + cono de papas + Coca 500ml.",
     price: "$6.900",
+    priceNumber: 6900,
     image: "/assets/products/pancho-clasico.webp",
+    content: {
+      hotDogVarietyId: "super-pancho",
+      hotDogCount: 1,
+      fries: {
+        name: "Cono de papas",
+        price: 2800,
+        image: "/assets/products/cono-papas-marca.png",
+        count: 1,
+      },
+      beverages: [{ beverageId: "gaseosa-500", count: 1 }],
+    },
   },
   {
     title: "COMBO CHILI",
@@ -95,7 +298,19 @@ export const COMBOS: Combo[] = [
     note: "para uno",
     desc: "Pancho chili con cheddar + papas con marca + gaseosa.",
     price: "$7.600",
+    priceNumber: 7600,
     image: "/assets/products/pancho-chili.webp",
+    content: {
+      hotDogVarietyId: "pancho-parrillero",
+      hotDogCount: 1,
+      fries: {
+        name: "Papas con cheddar",
+        price: 3400,
+        image: "/assets/products/cono-papas.webp",
+        count: 1,
+      },
+      beverages: [{ beverageId: "lata-gaseosa", count: 1 }],
+    },
   },
   {
     title: "DOBLE VIENA",
@@ -103,7 +318,19 @@ export const COMBOS: Combo[] = [
     note: "porción doble",
     desc: "Doble salchicha, 4 toppings a elección + papas pay.",
     price: "$8.200",
+    priceNumber: 8200,
     image: "/assets/products/pancho-clasico.webp",
+    content: {
+      hotDogVarietyId: "pancho-doble",
+      hotDogCount: 1,
+      fries: {
+        name: "Lluvia de papas pay",
+        price: 0,
+        image: "/assets/toppings/papas-fritas.png",
+        count: 1,
+      },
+      beverages: [],
+    },
   },
   {
     title: "PUNTO DOBLE",
@@ -111,7 +338,19 @@ export const COMBOS: Combo[] = [
     note: "para dos",
     desc: "Dos panchos, cono grande de papas y dos latas.",
     price: "$12.400",
+    priceNumber: 12400,
     image: "/assets/products/cono-papas-marca.png",
+    content: {
+      hotDogVarietyId: "super-pancho",
+      hotDogCount: 2,
+      fries: {
+        name: "Cono grande de papas",
+        price: 3400,
+        image: "/assets/products/cono-papas-marca.png",
+        count: 1,
+      },
+      beverages: [{ beverageId: "lata-gaseosa", count: 2 }],
+    },
   },
 ];
 

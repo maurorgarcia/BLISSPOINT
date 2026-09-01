@@ -1,9 +1,9 @@
 "use client";
 
-import { COMBOS } from "../../data/menu";
+import { COMBOS, Combo } from "../../data/menu";
 import { Button } from "../ui/Button";
 
-export function Combos({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
+export function Combos({ onOpenOrder }: { onOpenOrder: (combo?: Combo) => void }) {
   return (
     <section
       id="sec-combos"
@@ -162,7 +162,7 @@ export function Combos({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
                 </div>
               </div>
               <button
-                onClick={onOpenPedidosYa}
+                onClick={() => onOpenOrder(c)}
                 className="pd-cta-pill"
                 style={{
                   marginTop: "var(--space-4)",
@@ -185,8 +185,8 @@ export function Combos({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
           ))}
         </div>
         <div style={{ display: "flex", justifyContent: "center", marginTop: "var(--space-10)" }}>
-          <Button variant="pedidosya" size="lg" onClick={onOpenPedidosYa}>
-            Pedir por PedidosYa
+          <Button variant="primary" size="lg" onClick={() => onOpenOrder()} icon="/assets/pedidosya/envio.png">
+            Hace tu pedido ahora
           </Button>
         </div>
       </div>

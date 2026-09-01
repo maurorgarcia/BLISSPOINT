@@ -21,6 +21,7 @@ export function Button({
   onClick,
   disabled,
   type = "button",
+  icon,
 }: {
   variant?: Variant;
   size?: Size;
@@ -28,6 +29,7 @@ export function Button({
   onClick?: () => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
+  icon?: string;
 }) {
   const base: CSSProperties = {
     fontFamily: "var(--font-ui)",
@@ -108,6 +110,22 @@ export function Button({
               objectFit: "cover",
               borderRadius: "4px",
               display: "block",
+            }}
+          />
+          <span>{children}</span>
+        </>
+      ) : icon ? (
+        <>
+          <img
+            src={icon}
+            alt=""
+            aria-hidden="true"
+            style={{
+              width: logoSizes[size],
+              height: logoSizes[size],
+              objectFit: "contain",
+              display: "block",
+              filter: "brightness(0)",
             }}
           />
           <span>{children}</span>

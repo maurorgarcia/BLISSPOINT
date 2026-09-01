@@ -58,7 +58,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es">
+    <html lang="es" suppressHydrationWarning>
       <head>
         <link
           rel="stylesheet"
@@ -68,6 +68,7 @@ export default function RootLayout({
       <body
         className={`${gokartBubble.variable} ${magicClover.variable} ${newscrash.variable} ${baloo2.variable}`}
         style={fontVars}
+        suppressHydrationWarning
       >
         {children}
       </body>

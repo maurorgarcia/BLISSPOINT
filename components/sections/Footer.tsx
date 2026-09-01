@@ -1,6 +1,6 @@
 import { Button } from "../ui/Button";
 
-export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
+export function Footer({ onOpenOrder }: { onOpenOrder: () => void }) {
   return (
     <footer
       style={{
@@ -56,8 +56,8 @@ export function Footer({ onOpenPedidosYa }: { onOpenPedidosYa: () => void }) {
           <div style={{ fontFamily: "var(--font-display)", fontSize: "var(--text-lg)", color: "var(--color-accent-primary)" }}>
             PEDÍ AHORA
           </div>
-          <Button variant="pedidosya" onClick={onOpenPedidosYa}>
-            PedidosYa
+          <Button variant="primary" onClick={onOpenOrder} icon="/assets/pedidosya/envio.png">
+            Ver menú
           </Button>
         </div>
       </div>

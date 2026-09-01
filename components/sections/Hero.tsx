@@ -4,10 +4,10 @@ import { useEffect, useRef } from "react";
 import { Button } from "../ui/Button";
 
 export function Hero({
-  onOpenPedidosYa,
+  onOpenOrder,
   onGoMenu,
 }: {
-  onOpenPedidosYa: () => void;
+  onOpenOrder: () => void;
   onGoMenu: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -37,10 +37,11 @@ export function Hero({
   return (
     <header
       data-screen-label="Hero"
+      className="pd-hero"
       style={{
         position: "relative",
-        height: "100dvh",
-        maxHeight: "100dvh",
+        height: "100svh",
+        maxHeight: "100svh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -48,36 +49,21 @@ export function Hero({
         gap: "clamp(12px,2.2vh,24px)",
         padding: "clamp(16px,4vh,48px) var(--space-4)",
         textAlign: "center",
-        isolation: "isolate",
         overflow: "hidden",
       }}
     >
-      <video
-        ref={videoRef}
-        src="/assets/video/hero.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          zIndex: -2,
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: -1,
-          background:
-            "radial-gradient(120% 80% at 50% 40%,rgba(13,13,13,0.55),rgba(13,13,13,0.92) 75%),linear-gradient(180deg,rgba(119,140,74,0.35),rgba(13,13,13,0.9))",
-        }}
-      />
+      <div className="pd-hero-media" aria-hidden="true">
+        <video
+          ref={videoRef}
+          src="/assets/video/hero.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+        />
+        <div className="pd-hero-overlay" />
+      </div>
       <img
         src="/assets/brand/logo.png"
         alt="Bliss Point"
@@ -103,8 +89,8 @@ export function Hero({
         El punto justo para disfrutar algo rico.
       </div>
       <div style={{ display: "flex", gap: "var(--space-3)", flexWrap: "wrap", justifyContent: "center" }}>
-        <Button variant="pedidosya" size="lg" onClick={onOpenPedidosYa}>
-          PedidosYa
+        <Button variant="primary" size="lg" onClick={onOpenOrder}>
+          ¡Pedí ahora!
         </Button>
         <Button variant="solidDark" size="lg" onClick={onGoMenu}>
           Ver el menú

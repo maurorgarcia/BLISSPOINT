@@ -155,6 +155,36 @@ body {
   overflow-x: clip;
 }
 
+.pd-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pd-hero-media video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0);
+}
+
+.pd-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 80% at 50% 40%, rgba(13, 13, 13, 0.55), rgba(13, 13, 13, 0.92) 75%),
+    linear-gradient(180deg, rgba(119, 140, 74, 0.35), rgba(13, 13, 13, 0.9));
+  transform: translateZ(0);
+}
+
+.pd-hero>*:not(.pd-hero-media) {
+  position: relative;
+  z-index: 1;
+}
+
 a {
   color: var(--color-accent-primary);
   text-decoration: none;
@@ -165,31 +195,37 @@ a:hover {
 }
 
 @keyframes pdFloat {
+
   0%,
   100% {
     transform: translateY(0) rotate(var(--r, 0deg));
   }
+
   50% {
     transform: translateY(-18px) rotate(calc(var(--r, 0deg) + 3deg));
   }
 }
 
 @keyframes pdBob {
+
   0%,
   100% {
     transform: translateY(0);
   }
+
   50% {
     transform: translateY(-10px);
   }
 }
 
 @keyframes pdScrollCue {
+
   0%,
   100% {
     transform: translateY(0);
     opacity: 0.55;
   }
+
   50% {
     transform: translateY(6px);
     opacity: 1;
@@ -218,6 +254,7 @@ a:hover {
     opacity: 0;
     transform: translateY(28px);
   }
+
   to {
     opacity: 1;
     transform: none;
@@ -246,6 +283,7 @@ a:hover {
 .pd-cta-pill:hover {
   background: var(--color-accent-primary-hover);
 }
+
 .pd-cta-pill:active {
   transform: scale(0.98);
 }
@@ -253,6 +291,7 @@ a:hover {
 .pd-ig-btn:hover {
   transform: scale(1.02);
 }
+
 .pd-ig-btn:active {
   transform: scale(0.98);
 }
@@ -273,22 +312,27 @@ a:hover {
     grid-template-columns: 1fr;
     gap: var(--space-6);
   }
+
   .pd-pancho-text-col,
   .pd-pancho-image-col {
     display: contents;
   }
+
   .pd-order-title {
     order: 1;
     text-align: center;
   }
+
   .pd-order-paragraph {
     order: 2;
     text-align: center;
     max-width: 100%;
   }
+
   .pd-order-image {
     order: 3;
   }
+
   .pd-order-button {
     order: 4;
     display: flex;
@@ -311,6 +355,7 @@ a:hover {
 .pd-toppings-carousel {
   display: none;
 }
+
 @media (max-width: 1024px) {
   .pd-toppings-carousel {
     display: block;
@@ -324,6 +369,7 @@ a:hover {
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
+
 .pd-toppings-track::-webkit-scrollbar,
 .pd-toppings-track-desktop::-webkit-scrollbar {
   display: none;
@@ -358,10 +404,12 @@ a:hover {
   user-select: none;
   -webkit-user-select: none;
 }
+
 .pd-toppings-track-desktop.pd-dragging {
   cursor: grabbing;
   scroll-snap-type: none;
 }
+
 .pd-toppings-track-desktop img {
   -webkit-user-drag: none;
 }
@@ -419,6 +467,7 @@ a:hover {
     text-align: center;
     gap: var(--space-12);
   }
+
   .pd-nosotros-map {
     height: 220px;
   }
@@ -429,10 +478,12 @@ a:hover {
   .pd-footer-grid {
     justify-items: center;
   }
+
   .pd-footer-col {
     align-items: center;
     text-align: center;
   }
+
   .pd-footer-bottom {
     text-align: center;
   }
@@ -453,9 +504,8 @@ a:hover {
     overscroll-behavior-x: contain;
     padding-inline: var(--space-4) !important;
   }
+
   .pd-tab-track::-webkit-scrollbar {
     display: none;
   }
 }
-
-
