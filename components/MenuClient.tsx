@@ -130,7 +130,9 @@ export function MenuClient() {
           onFinalize={closeOrderAndGoCart}
         />
 
-        <CartFloatingButton onClick={openCart} />
+        {!cartDrawerOpen && !orderModalOpen && !pedidosYaOpen && (
+          <CartFloatingButton onClick={openCart} />
+        )}
         <CartDrawer open={cartDrawerOpen} onClose={closeCart} />
       </div>
     </CartProvider>
