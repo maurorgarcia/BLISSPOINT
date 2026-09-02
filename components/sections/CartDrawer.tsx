@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
+import { useLockBodyScroll } from "../hooks/useLockBodyScroll";
 import {
   ORDER_SAUCES,
   ORDER_TOPPINGS,
@@ -9,6 +10,9 @@ import {
 } from "../../data/menu";
 
 type CartStep = "detail" | "personal" | "delivery" | "payment";
+
+// Placeholder while the client confirms the real business line.
+const WHATSAPP_NUMBER = "5493364540036";
 
 const formatPrice = (n: number) =>
   "$" +
@@ -32,7 +36,7 @@ function MiniQty({
         display: "inline-flex",
         alignItems: "center",
         gap: 2,
-        background: "var(--color-bg-panel)",
+        background: "var(--color-bg-surface)",
         borderRadius: 9999,
         padding: 2,
         border: "1px solid var(--color-border-subtle)",
@@ -111,7 +115,7 @@ function SectionHeader({
     <div
       style={{
         background:
-          "linear-gradient(90deg,var(--color-bg-panel) 0%,rgba(206,242,73,0.08) 100%)",
+          "linear-gradient(90deg,var(--color-bg-surface) 0%,rgba(206,242,73,0.08) 100%)",
         padding: "var(--space-3) var(--space-4)",
         borderTop: "1px solid var(--color-border-subtle)",
         borderBottom: "1px solid var(--color-border-subtle)",
@@ -148,6 +152,7 @@ function Radio({
 }) {
   return (
     <label
+      onClick={onChange}
       style={{
         display: "flex",
         alignItems: "flex-start",
@@ -342,6 +347,8 @@ export function CartDrawer({
 
   const meta = STEP_META[step];
 
+  useLockBodyScroll(open);
+
   const hasItems =
     hotDogs.length + beverages.length + fries.length > 0;
 
@@ -375,6 +382,81 @@ export function CartDrawer({
   const paymentValid = checkout.paymentMethod !== null;
   const canConfirm = personalValid && deliveryValid && paymentValid && hasItems;
 
+  const buildWhatsAppMessage = () => {
+    const lines: string[] = ["🌭 *Nuevo pedido - Bliss Point*", ""];
+
+    if (hotDogs.length > 0) {
+      lines.push("*Panchos:*");
+      for (const h of hotDogs) {
+        lines.push(`${h.quantity}x ${h.variety.name} - ${formatPrice(h.variety.price * h.quantity)}`);
+        if (h.sauces.length > 0) lines.push(`  Salsas: ${h.sauces.map(sauceName).join(", ")}`);
+        if (h.toppings.length > 0) lines.push(`  Toppings: ${h.toppings.map(toppingName).join(", ")}`);
+      }
+      lines.push("");
+    }
+
+    if (fries.length > 0) {
+      lines.push("*Extras:*");
+      for (const f of fries) {
+        lines.push(`${f.quantity}x ${f.name} - ${formatPrice(f.price * f.quantity)}`);
+      }
+      lines.push("");
+    }
+
+    if (beverages.length > 0) {
+      lines.push("*Bebidas:*");
+      for (const b of beverages) {
+        lines.push(`${b.quantity}x ${b.beverage.name} - ${formatPrice(b.beverage.price * b.quantity)}`);
+      }
+      lines.push("");
+    }
+
+    lines.push(`*Total: ${totalPriceLabel}*`, "");
+
+    lines.push(
+      "*Datos del cliente*",
+      `Nombre: ${checkout.clientName}`,
+      `Teléfono: ${checkout.clientPhone}`,
+      "",
+    );
+
+    lines.push("*Entrega*");
+    if (checkout.deliveryType === "takeaway") {
+      lines.push(
+        "Modalidad: Take Away",
+        `Retira por: ${LOCATIONS[0].address}`,
+        `Nombre de quien retira: ${checkout.takeAwayName}`,
+        `Cuándo: ${
+          checkout.takeAwayTiming === "asap"
+            ? "Lo antes posible"
+            : `A las ${checkout.takeAwaySpecificTime}`
+        }`,
+      );
+    } else {
+      lines.push("Modalidad: Envío a domicilio", `Dirección: ${checkout.envioCalle} ${checkout.envioAltura}`);
+      if (checkout.envioEntreCalles) lines.push(`Entre calles: ${checkout.envioEntreCalles}`);
+      if (checkout.envioReferencia) lines.push(`Referencia: ${checkout.envioReferencia}`);
+      if (checkout.envioComentario) lines.push(`Comentario: ${checkout.envioComentario}`);
+    }
+    lines.push("");
+
+    lines.push(
+      "*Pago*",
+      checkout.paymentMethod === "efectivo"
+        ? "Efectivo"
+        : checkout.paymentMethod === "debito"
+          ? "Tarjeta de Débito"
+          : "Mercado Pago",
+    );
+
+    return lines.join("\n");
+  };
+
+  const sendOrderToWhatsApp = () => {
+    const text = encodeURIComponent(buildWhatsAppMessage());
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, "_blank");
+  };
+
   const next = () => {
     if (step === "detail" && canGoPersonal) setStep("personal");
     else if (step === "personal" && personalValid) setStep("delivery");
@@ -396,7 +478,7 @@ export function CartDrawer({
         style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(31,10,12,0.78)",
+          background: "rgba(0,0,0,0.72)",
           zIndex: "calc(var(--z-modal-overlay) as unknown as number) - 5",
         }}
       />
@@ -450,7 +532,7 @@ export function CartDrawer({
                 height: 36,
                 borderRadius: "50%",
                 border: "1px solid var(--color-border-subtle)",
-                background: step === "detail" ? "transparent" : "var(--color-bg-panel)",
+                background: step === "detail" ? "transparent" : "var(--color-bg-surface)",
                 color: step === "detail" ? "var(--color-text-secondary)" : "var(--color-text-primary)",
                 fontWeight: 800,
                 fontSize: "var(--text-xl)",
@@ -494,7 +576,7 @@ export function CartDrawer({
                 height: 38,
                 borderRadius: "50%",
                 border: "1px solid var(--color-border-subtle)",
-                background: "var(--color-bg-panel)",
+                background: "var(--color-bg-surface)",
                 color: "var(--color-text-secondary)",
                 fontSize: "var(--text-lg)",
                 fontWeight: 700,
@@ -579,7 +661,7 @@ export function CartDrawer({
                   ¡Pedido Confirmado!
                 </div>
                 <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-base)" }}>
-                  Te esperamos con la mejor comida.
+                  Enviá el pedido por WhatsApp para que lo confirmemos.
                 </div>
               </div>
               <div
@@ -661,12 +743,13 @@ export function CartDrawer({
               </div>
               <button
                 onClick={() => {
+                  sendOrderToWhatsApp();
                   clearCart();
                   onClose();
                 }}
                 style={{
-                  background: "var(--color-accent-primary)",
-                  color: "var(--color-text-on-accent)",
+                  background: "#25D366",
+                  color: "#0f1400",
                   border: "none",
                   borderRadius: "var(--radius-full)",
                   padding: "16px 34px",
@@ -674,9 +757,15 @@ export function CartDrawer({
                   fontFamily: "var(--font-ui)",
                   cursor: "pointer",
                   fontSize: "var(--text-lg)",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 10,
                 }}
               >
-                Volver al menú
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.04 2c-5.52 0-10 4.48-10 10 0 1.77.46 3.45 1.27 4.9L2 22l5.25-1.38a9.94 9.94 0 0 0 4.79 1.22h.01c5.52 0 10-4.48 10-10s-4.48-9.84-10.01-9.84Zm5.86 14.2c-.25.7-1.45 1.34-2 1.42-.51.08-1.16.11-1.87-.12-.43-.14-.98-.32-1.69-.62-2.97-1.28-4.9-4.28-5.05-4.48-.15-.2-1.21-1.61-1.21-3.07 0-1.46.77-2.18 1.04-2.48.27-.3.6-.37.8-.37.2 0 .4 0 .58.01.19.01.44-.07.68.52.25.6.85 2.08.92 2.23.07.15.12.33.02.53-.1.2-.15.32-.3.49-.15.17-.31.38-.44.51-.15.15-.3.31-.13.61.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.48.13.65-.08.17-.2.73-.85.93-1.14.2-.29.4-.24.67-.14.28.1 1.75.83 2.05 .98.3.15.5.22.57.35.08.13.08.75-.17 1.45Z" />
+                </svg>
+                Enviar pedido por WhatsApp
               </button>
             </div>
           ) : (
@@ -1473,6 +1562,7 @@ export function CartFloatingButton({
   onClick: () => void;
 }) {
   const { totalCount } = useCart();
+  if (totalCount === 0) return null;
   return (
     <button
       onClick={onClick}

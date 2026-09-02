@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
+import { useLockBodyScroll } from "../hooks/useLockBodyScroll";
 
 export function Modal({
   open,
@@ -17,6 +18,8 @@ export function Modal({
   ctaLabel?: string;
   onCta?: () => void;
 }) {
+  useLockBodyScroll(open);
+
   if (!open) return null;
 
   return (
@@ -24,7 +27,7 @@ export function Modal({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(31,10,12,0.72)",
+        background: "rgba(0,0,0,0.68)",
         zIndex: "var(--z-modal-overlay)" as unknown as number,
         display: "flex",
         alignItems: "center",

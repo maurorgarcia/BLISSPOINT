@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
+import { useLockBodyScroll } from "../hooks/useLockBodyScroll";
 import {
   BEVERAGES,
   Beverage,
@@ -12,22 +13,51 @@ import {
   ORDER_TOPPINGS,
 } from "../../data/menu";
 
-type Step =
-  | "variety"
-  | "sauces"
-  | "toppings"
-  | "another"
-  | "beverages"
-  | "summary";
+type Step = "variety" | "customize" | "another" | "beverages" | "summary";
+
+// One PendingUnit = one physical pancho, so quantity never hides a mix of
+// different toppings/sauces: every unit, even of the same variety, is its
+// own customizable pancho.
+type PendingUnit = {
+  id: string;
+  variety: HotDogVariety;
+  sauces: string[];
+  toppings: string[];
+};
 
 type PendingHotDog = {
-  variety: HotDogVariety | null;
+  units: PendingUnit[];
+};
+
+type PendingVarietyQty = {
+  variety: HotDogVariety;
   quantity: number;
   sauces: string[];
   toppings: string[];
 };
 
 type PendingBeverage = Record<string, number>;
+
+const makeUnitId = () => Math.random().toString(36).slice(2, 10);
+
+// Collapses units that share variety + sauces + toppings into a single
+// display row with a quantity, purely for rendering/cart purposes.
+function groupUnits(units: PendingUnit[]): PendingVarietyQty[] {
+  const groups: PendingVarietyQty[] = [];
+  for (const u of units) {
+    const existing = groups.find(
+      (g) =>
+        g.variety.id === u.variety.id &&
+        g.sauces.length === u.sauces.length &&
+        g.sauces.every((s) => u.sauces.includes(s)) &&
+        g.toppings.length === u.toppings.length &&
+        g.toppings.every((t) => u.toppings.includes(t)),
+    );
+    if (existing) existing.quantity += 1;
+    else groups.push({ variety: u.variety, quantity: 1, sauces: u.sauces, toppings: u.toppings });
+  }
+  return groups;
+}
 
 const formatPrice = (n: number) =>
   "$" +
@@ -38,23 +68,21 @@ const formatPrice = (n: number) =>
 
 const STEP_LABELS: Record<Step, { title: string; step: number }> = {
   variety: { title: "Elegí tu pancho", step: 1 },
-  sauces: { title: "Agregale salsas", step: 2 },
-  toppings: { title: "Agregale toppings", step: 3 },
-  another: { title: "¿Otro pancho más?", step: 4 },
-  beverages: { title: "¿Algo para tomar?", step: 5 },
-  summary: { title: "Resumen del pedido", step: 6 },
+  customize: { title: "Personalizá cada pancho", step: 2 },
+  another: { title: "¿Otro pancho más?", step: 3 },
+  beverages: { title: "¿Algo para tomar?", step: 4 },
+  summary: { title: "Resumen del pedido", step: 5 },
 };
 
 const STEP_LABELS_COMBO: Record<Step, { title: string; step: number }> = {
   variety: { title: "Tu combo ya incluye", step: 1 },
-  sauces: { title: "Salsas para el pancho", step: 2 },
-  toppings: { title: "Toppings para el pancho", step: 3 },
-  another: { title: "¿Agregar algo más?", step: 4 },
-  beverages: { title: "Bebidas de tu combo", step: 5 },
-  summary: { title: "Resumen del combo", step: 6 },
+  customize: { title: "Personalizá tu pancho", step: 2 },
+  another: { title: "¿Agregar algo más?", step: 3 },
+  beverages: { title: "Bebidas de tu combo", step: 4 },
+  summary: { title: "Resumen del combo", step: 5 },
 };
 
-const TOTAL_STEPS = 6;
+const TOTAL_STEPS = 5;
 
 function QtyControl({
   value,
@@ -309,12 +337,7 @@ export function OrderModal({
 }) {
   const { addHotDog, addBeverage, addFries, totalPriceLabel } = useCart();
   const [step, setStep] = useState<Step>("variety");
-  const [pending, setPending] = useState<PendingHotDog>({
-    variety: null,
-    quantity: 1,
-    sauces: [],
-    toppings: [],
-  });
+  const [pending, setPending] = useState<PendingHotDog>({ units: [] });
   const [beveragesQty, setBeveragesQty] = useState<PendingBeverage>({});
   const [finishedHotDogs, setFinishedHotDogs] = useState<PendingHotDog[]>([]);
   const [confirmed, setConfirmed] = useState(false);
@@ -324,19 +347,26 @@ export function OrderModal({
   const stepLabels = isCombo ? STEP_LABELS_COMBO : STEP_LABELS;
   const label = stepLabels[step];
 
+  useLockBodyScroll(open);
+
   useEffect(() => {
     if (!open) {
       setConfirmed(false);
       return;
     }
     if (initialCombo) {
-      const variety =
-        HOT_DOG_VARIETIES.find((h) => h.id === initialCombo.content.hotDogVarietyId) || null;
+      const variety = HOT_DOG_VARIETIES.find(
+        (h) => h.id === initialCombo.content.hotDogVarietyId,
+      );
       setPending({
-        variety,
-        quantity: initialCombo.content.hotDogCount,
-        sauces: [],
-        toppings: [],
+        units: variety
+          ? Array.from({ length: initialCombo.content.hotDogCount }, () => ({
+              id: makeUnitId(),
+              variety,
+              sauces: [],
+              toppings: [],
+            }))
+          : [],
       });
       const bevQty: PendingBeverage = {};
       for (const b of initialCombo.content.beverages) {
@@ -344,10 +374,10 @@ export function OrderModal({
       }
       setBeveragesQty(bevQty);
       setFinishedHotDogs([]);
-      setStep("sauces");
+      setStep("customize");
     } else {
       setStep("variety");
-      setPending({ variety: null, quantity: 1, sauces: [], toppings: [] });
+      setPending({ units: [] });
       setBeveragesQty({});
       setFinishedHotDogs([]);
     }
@@ -356,45 +386,44 @@ export function OrderModal({
   if (!open) return null;
 
   const next = () => {
-    if (step === "variety") setStep("sauces");
-    else if (step === "sauces") setStep("toppings");
-    else if (step === "toppings") setStep("another");
+    if (step === "variety") setStep("customize");
+    else if (step === "customize") setStep("another");
     else if (step === "another") setStep("beverages");
     else if (step === "beverages") setStep("summary");
   };
 
   const back = () => {
-    if (step === "sauces") {
+    if (step === "customize") {
       if (isCombo) return;
       setStep("variety");
-    } else if (step === "toppings") setStep("sauces");
-    else if (step === "another") setStep("toppings");
+    } else if (step === "another") setStep("customize");
     else if (step === "beverages") {
       if (finishedHotDogs.length > 0 || isCombo) setStep("another");
-      else setStep("toppings");
+      else setStep("customize");
     } else if (step === "summary") setStep("beverages");
   };
 
   const savePendingAndRestart = () => {
     setFinishedHotDogs((prev) => [...prev, { ...pending }]);
-    setPending({ variety: null, quantity: 1, sauces: [], toppings: [] });
+    setPending({ units: [] });
     setStep("variety");
   };
 
   const finishHotDogs = () => {
-    if (pending.variety) {
+    if (pending.units.length > 0) {
       setFinishedHotDogs((prev) => [...prev, { ...pending }]);
     }
-    setPending({ variety: null, quantity: 1, sauces: [], toppings: [] });
+    setPending({ units: [] });
     setStep("beverages");
   };
 
   const confirmOrder = () => {
     const allHDs = [...finishedHotDogs];
-    if (pending.variety && pending.quantity > 0) allHDs.push(pending);
+    if (pending.units.length > 0) allHDs.push(pending);
     for (const hd of allHDs) {
-      if (!hd.variety) continue;
-      addHotDog(hd.variety, hd.sauces, hd.toppings, hd.quantity);
+      for (const g of groupUnits(hd.units)) {
+        addHotDog(g.variety, g.sauces, g.toppings, g.quantity);
+      }
     }
     for (const [id, q] of Object.entries(beveragesQty)) {
       const bev = BEVERAGES.find((b) => b.id === id);
@@ -422,7 +451,7 @@ export function OrderModal({
       style={{
         position: "fixed",
         inset: 0,
-        background: "rgba(31,10,12,0.82)",
+        background: "rgba(0,0,0,0.75)",
         zIndex: "var(--z-modal-overlay)" as unknown as number,
         display: "flex",
         alignItems: "center",
@@ -485,7 +514,7 @@ export function OrderModal({
               height: 38,
               borderRadius: "50%",
               border: "1px solid var(--color-border-subtle)",
-              background: "var(--color-bg-panel)",
+              background: "var(--color-bg-surface)",
               color: "var(--color-text-secondary)",
               fontSize: "var(--text-lg)",
               fontWeight: 700,
@@ -585,16 +614,8 @@ export function OrderModal({
             </div>
           ) : step === "variety" ? (
             <VarietyStep pending={pending} setPending={setPending} next={next} />
-          ) : step === "sauces" ? (
-            <SaucesStep
-              pending={pending}
-              setPending={setPending}
-              next={next}
-              back={back}
-              combo={initialCombo}
-            />
-          ) : step === "toppings" ? (
-            <ToppingsStep
+          ) : step === "customize" ? (
+            <CustomizeStep
               pending={pending}
               setPending={setPending}
               next={next}
@@ -644,10 +665,33 @@ function VarietyStep({
   setPending: (p: PendingHotDog) => void;
   next: () => void;
 }) {
+  const qtyFor = (id: string) => pending.units.filter((u) => u.variety.id === id).length;
+
+  const setQty = (variety: HotDogVariety, q: number) => {
+    const current = pending.units.filter((u) => u.variety.id === variety.id);
+    const others = pending.units.filter((u) => u.variety.id !== variety.id);
+    const updated =
+      q <= current.length
+        ? current.slice(0, q)
+        : [
+            ...current,
+            ...Array.from({ length: q - current.length }, () => ({
+              id: makeUnitId(),
+              variety,
+              sauces: [] as string[],
+              toppings: [] as string[],
+            })),
+          ];
+    setPending({ ...pending, units: [...others, ...updated] });
+  };
+
+  const totalQty = pending.units.length;
+
   return (
     <>
       <p style={{ color: "var(--color-text-secondary)", margin: 0 }}>
-        Elegí una variedad y luego continuá para agregarle salsas y toppings.
+        Elegí uno o varios panchos y la cantidad de cada uno. Después le agregás salsas y
+        toppings.
       </p>
       <div
         style={{
@@ -657,13 +701,12 @@ function VarietyStep({
         }}
       >
         {HOT_DOG_VARIETIES.map((v) => {
-          const selected = pending.variety?.id === v.id;
+          const qty = qtyFor(v.id);
+          const selected = qty > 0;
           return (
             <div
               key={v.id}
-              onClick={() => setPending({ ...pending, variety: v })}
               style={{
-                cursor: "pointer",
                 border: selected
                   ? "3px solid var(--color-accent-primary)"
                   : "1px solid var(--color-border-subtle)",
@@ -710,6 +753,7 @@ function VarietyStep({
               >
                 {v.priceLabel}
               </div>
+              <QtyControl size="md" value={qty} min={0} onChange={(q) => setQty(v, q)} />
               {selected && (
                 <div
                   style={{
@@ -740,7 +784,7 @@ function VarietyStep({
         style={{
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
+          justifyContent: "flex-end",
           gap: "var(--space-4)",
           flexWrap: "wrap",
           marginTop: "auto",
@@ -748,51 +792,19 @@ function VarietyStep({
           borderTop: "1px solid var(--color-border-subtle)",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--space-2)",
-            background: "var(--color-bg-surface)",
-            padding: "var(--space-4) var(--space-5)",
-            borderRadius: "var(--radius-card)",
-            border: "2px solid var(--color-border-subtle)",
-            boxShadow: "0 8px 20px rgba(0,0,0,0.3)",
-          }}
-        >
-          <span
-            style={{
-              color: "var(--color-accent-primary)",
-              fontFamily: "var(--font-playful)",
-              fontWeight: 700,
-              fontSize: "var(--text-xs)",
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-            }}
-          >
-            Cantidad de panchos
-          </span>
-          <QtyControl
-            size="lg"
-            value={pending.quantity}
-            onChange={(q) => setPending({ ...pending, quantity: q })}
-          />
-        </div>
         <button
-          disabled={!pending.variety}
+          disabled={totalQty === 0}
           onClick={next}
           style={{
-            background: pending.variety ? "var(--color-accent-primary)" : "var(--color-bg-panel)",
-            color: pending.variety
-              ? "var(--color-text-on-accent)"
-              : "var(--color-text-secondary)",
+            background: totalQty > 0 ? "var(--color-accent-primary)" : "var(--color-bg-surface)",
+            color: totalQty > 0 ? "var(--color-text-on-accent)" : "var(--color-text-secondary)",
             border: "none",
             borderRadius: "var(--radius-full)",
             padding: "18px 34px",
             fontWeight: 900,
             fontFamily: "var(--font-ui)",
-            cursor: pending.variety ? "pointer" : "not-allowed",
-            opacity: pending.variety ? 1 : 0.5,
+            cursor: totalQty > 0 ? "pointer" : "not-allowed",
+            opacity: totalQty > 0 ? 1 : 0.5,
             fontSize: "var(--text-lg)",
           }}
         >
@@ -803,7 +815,212 @@ function VarietyStep({
   );
 }
 
-function SaucesStep({
+function VarietyAccordion({
+  entry,
+  title,
+  expanded,
+  onToggleExpanded,
+  onChangeSauces,
+  onChangeToppings,
+}: {
+  entry: PendingUnit;
+  title: string;
+  expanded: boolean;
+  onToggleExpanded: () => void;
+  onChangeSauces: (sauces: string[]) => void;
+  onChangeToppings: (toppings: string[]) => void;
+}) {
+  const { variety, sauces, toppings } = entry;
+
+  const toggleSauce = (id: string) => {
+    onChangeSauces(sauces.includes(id) ? sauces.filter((s) => s !== id) : [...sauces, id]);
+  };
+  const toggleTopping = (id: string) => {
+    onChangeToppings(
+      toppings.includes(id) ? toppings.filter((s) => s !== id) : [...toppings, id],
+    );
+  };
+
+  const summary =
+    sauces.length === 0 && toppings.length === 0
+      ? "Sin salsas ni toppings"
+      : `${sauces.length} salsa${sauces.length === 1 ? "" : "s"} · ${toppings.length} topping${toppings.length === 1 ? "" : "s"}`;
+
+  return (
+    <div
+      style={{
+        background: "var(--color-bg-surface)",
+        border: "1px solid var(--color-border-subtle)",
+        borderRadius: "var(--radius-card)",
+        overflow: "hidden",
+      }}
+    >
+      <button
+        onClick={onToggleExpanded}
+        style={{
+          width: "100%",
+          padding: "var(--space-4)",
+          background: "transparent",
+          border: "none",
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          gap: "var(--space-4)",
+          textAlign: "left",
+        }}
+      >
+        <img
+          src={variety.image}
+          alt=""
+          style={{ width: 52, height: 52, objectFit: "contain", flexShrink: 0 }}
+        />
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "var(--text-lg)",
+              color: "var(--color-text-primary)",
+            }}
+          >
+            {title}
+          </div>
+          <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)" }}>
+            {summary}
+          </div>
+        </div>
+        <span
+          style={{
+            color: "var(--color-accent-primary)",
+            fontSize: "var(--text-lg)",
+            fontWeight: 700,
+            flexShrink: 0,
+            transform: expanded ? "rotate(180deg)" : "none",
+            transition: "transform .2s ease",
+          }}
+        >
+          ▾
+        </span>
+      </button>
+
+      {expanded && (
+        <div
+          style={{
+            padding: "0 var(--space-4) var(--space-4)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--space-4)",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+            <div
+              style={{
+                fontFamily: "var(--font-playful)",
+                fontSize: "var(--text-xs)",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--color-accent-primary)",
+              }}
+            >
+              Salsas
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))",
+                gap: "var(--space-2)",
+              }}
+            >
+              {ORDER_SAUCES.map((s) => {
+                const active = sauces.includes(s.id);
+                return (
+                  <button
+                    key={s.id}
+                    onClick={() => toggleSauce(s.id)}
+                    style={{
+                      border: active
+                        ? "2px solid var(--color-accent-primary)"
+                        : "1px solid var(--color-border-subtle)",
+                      background: active ? "rgba(206,242,73,0.1)" : "var(--color-bg-surface)",
+                      borderRadius: "var(--radius-card)",
+                      padding: "8px 10px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      color: "var(--color-text-primary)",
+                      fontFamily: "var(--font-ui)",
+                      fontWeight: 700,
+                      fontSize: "var(--text-xs)",
+                      textAlign: "left",
+                    }}
+                  >
+                    <img src={s.image} alt="" style={{ width: 22, height: 22, objectFit: "contain", flexShrink: 0 }} />
+                    <span style={{ flex: 1 }}>{s.name}</span>
+                    {active && <span style={{ color: "var(--color-accent-primary)", fontWeight: 900 }}>✓</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)" }}>
+            <div
+              style={{
+                fontFamily: "var(--font-playful)",
+                fontSize: "var(--text-xs)",
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                color: "var(--color-accent-primary)",
+              }}
+            >
+              Toppings
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit,minmax(140px,1fr))",
+                gap: "var(--space-2)",
+              }}
+            >
+              {ORDER_TOPPINGS.map((t) => {
+                const active = toppings.includes(t.id);
+                return (
+                  <button
+                    key={t.id}
+                    onClick={() => toggleTopping(t.id)}
+                    style={{
+                      border: active
+                        ? "2px solid var(--color-accent-primary)"
+                        : "1px solid var(--color-border-subtle)",
+                      background: active ? "rgba(206,242,73,0.1)" : "var(--color-bg-surface)",
+                      borderRadius: "var(--radius-card)",
+                      padding: "8px 10px",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                      color: "var(--color-text-primary)",
+                      fontFamily: "var(--font-ui)",
+                      fontWeight: 700,
+                      fontSize: "var(--text-xs)",
+                      textAlign: "left",
+                    }}
+                  >
+                    <img src={t.image} alt="" style={{ width: 22, height: 22, objectFit: "contain", flexShrink: 0 }} />
+                    <span style={{ flex: 1 }}>{t.name}</span>
+                    {active && <span style={{ color: "var(--color-accent-primary)", fontWeight: 900 }}>✓</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CustomizeStep({
   pending,
   setPending,
   next,
@@ -816,123 +1033,66 @@ function SaucesStep({
   back: () => void;
   combo?: Combo;
 }) {
-  const toggle = (id: string) => {
-    const exists = pending.sauces.includes(id);
+  const orderedUnits = useMemo(() => {
+    const order = HOT_DOG_VARIETIES.map((v) => v.id);
+    return [...pending.units].sort(
+      (a, b) => order.indexOf(a.variety.id) - order.indexOf(b.variety.id),
+    );
+  }, [pending.units]);
+
+  const [expandedId, setExpandedId] = useState<string | null>(orderedUnits[0]?.id ?? null);
+
+  const updateUnit = (unitId: string, patch: Partial<PendingUnit>) => {
     setPending({
       ...pending,
-      sauces: exists ? pending.sauces.filter((s) => s !== id) : [...pending.sauces, id],
+      units: pending.units.map((u) => (u.id === unitId ? { ...u, ...patch } : u)),
     });
   };
 
-  const none = pending.sauces.length === 0;
+  const varietyTotals = new Map<string, number>();
+  for (const u of orderedUnits) {
+    varietyTotals.set(u.variety.id, (varietyTotals.get(u.variety.id) || 0) + 1);
+  }
+  const seenSoFar = new Map<string, number>();
+  const titleFor = (unit: PendingUnit) => {
+    const total = varietyTotals.get(unit.variety.id) || 1;
+    const idx = (seenSoFar.get(unit.variety.id) || 0) + 1;
+    seenSoFar.set(unit.variety.id, idx);
+    return total > 1 ? `${unit.variety.name} (pancho ${idx} de ${total})` : unit.variety.name;
+  };
 
   return (
     <>
       {combo && <ComboHeader combo={combo} />}
 
-      {pending.variety && (
+      {combo?.content.fries && (
         <IncludedBadge
           items={[
             {
-              title: pending.variety.name,
-              subtitle: pending.quantity > 1 ? `${pending.quantity} unidades` : undefined,
-              image: pending.variety.image,
-              count: pending.quantity,
+              title: combo.content.fries.name,
+              image: combo.content.fries.image,
+              count: combo.content.fries.count,
             },
-            ...(combo?.content.fries
-              ? [
-                  {
-                    title: combo.content.fries.name,
-                    image: combo.content.fries.image,
-                    count: combo.content.fries.count,
-                  },
-                ]
-              : []),
           ]}
         />
       )}
 
       <p style={{ color: "var(--color-text-secondary)", margin: 0 }}>
-        Elegí todas las salsas que quieras para tu pancho. Podés seleccionar varias o ninguna.
+        Tocá cada pancho para elegirle sus propias salsas y toppings.
       </p>
 
-      <button
-        onClick={() => setPending({ ...pending, sauces: [] })}
-        style={{
-          alignSelf: "flex-start",
-          padding: "12px 24px",
-          borderRadius: "var(--radius-full)",
-          border: none
-            ? "2px solid var(--color-accent-primary)"
-            : "1px solid var(--color-border-subtle)",
-          background: none
-            ? "rgba(206,242,73,0.12)"
-            : "var(--color-bg-surface)",
-          color: "var(--color-text-primary)",
-          fontFamily: "var(--font-ui)",
-          fontWeight: 700,
-          cursor: "pointer",
-        }}
-      >
-        {none ? "✓ " : ""}No agregar salsa
-      </button>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))",
-          gap: "var(--space-3)",
-        }}
-      >
-        {ORDER_SAUCES.map((s) => {
-          const active = pending.sauces.includes(s.id);
-          return (
-            <button
-              key={s.id}
-              onClick={() => toggle(s.id)}
-              style={{
-                border: active
-                  ? "3px solid var(--color-accent-primary)"
-                  : "1px solid var(--color-border-subtle)",
-                background: active ? "rgba(206,242,73,0.1)" : "var(--color-bg-surface)",
-                borderRadius: "var(--radius-card)",
-                padding: "var(--space-3)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "var(--space-2)",
-                color: "var(--color-text-primary)",
-                fontFamily: "var(--font-ui)",
-                fontWeight: 700,
-                fontSize: "var(--text-sm)",
-                textAlign: "left",
-              }}
-            >
-              <img
-                src={s.image}
-                alt=""
-                style={{
-                  width: 32,
-                  height: 32,
-                  objectFit: "contain",
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{ flex: 1 }}>{s.name}</span>
-              {active && (
-                <span
-                  style={{
-                    color: "var(--color-accent-primary)",
-                    fontWeight: 900,
-                    fontSize: "var(--text-lg)",
-                  }}
-                >
-                  ✓
-                </span>
-              )}
-            </button>
-          );
-        })}
+      <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
+        {orderedUnits.map((unit) => (
+          <VarietyAccordion
+            key={unit.id}
+            entry={unit}
+            title={titleFor(unit)}
+            expanded={expandedId === unit.id}
+            onToggleExpanded={() => setExpandedId((cur) => (cur === unit.id ? null : unit.id))}
+            onChangeSauces={(sauces) => updateUnit(unit.id, { sauces })}
+            onChangeToppings={(toppings) => updateUnit(unit.id, { toppings })}
+          />
+        ))}
       </div>
 
       <FooterActions
@@ -941,205 +1101,6 @@ function SaucesStep({
         nextLabel="Continuar →"
         onNext={next}
       />
-    </>
-  );
-}
-
-function ToppingsStep({
-  pending,
-  setPending,
-  next,
-  back,
-  combo,
-}: {
-  pending: PendingHotDog;
-  setPending: (p: PendingHotDog) => void;
-  next: () => void;
-  back: () => void;
-  combo?: Combo;
-}) {
-  const toggle = (id: string) => {
-    const exists = pending.toppings.includes(id);
-    setPending({
-      ...pending,
-      toppings: exists
-        ? pending.toppings.filter((s) => s !== id)
-        : [...pending.toppings, id],
-    });
-  };
-
-  const none = pending.toppings.length === 0;
-
-  const sauceName = (id: string) => ORDER_SAUCES.find((s) => s.id === id)?.name;
-
-  return (
-    <>
-      {combo && <ComboHeader combo={combo} />}
-
-      {pending.variety && (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "var(--space-2)",
-            padding: "var(--space-3) var(--space-4)",
-            background: "var(--color-bg-surface)",
-            borderRadius: "var(--radius-card)",
-            border: "1px solid var(--color-border-subtle)",
-          }}
-        >
-          <div
-            style={{
-              fontFamily: "var(--font-playful)",
-              fontSize: "var(--text-xs)",
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-              color: "var(--color-accent-primary)",
-            }}
-          >
-            Tu pancho hasta ahora
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)" }}>
-            <img
-              src={pending.variety.image}
-              alt=""
-              style={{ width: 40, height: 40, objectFit: "contain" }}
-            />
-            <div style={{ flex: 1 }}>
-              <div style={{ color: "var(--color-text-primary)", fontWeight: 800 }}>
-                {pending.quantity > 1 ? `${pending.quantity}x ` : ""}
-                {pending.variety.name}
-              </div>
-              <div style={{ color: "var(--color-text-secondary)", fontSize: "var(--text-sm)" }}>
-                Salsas:{" "}
-                <span style={{ color: "var(--color-text-primary)" }}>
-                  {pending.sauces.length === 0
-                    ? "Ninguna"
-                    : pending.sauces.map(sauceName).join(", ")}
-                </span>
-              </div>
-            </div>
-          </div>
-          {combo?.content.fries && (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "var(--space-2)",
-                paddingTop: "var(--space-2)",
-                borderTop: "1px dashed var(--color-accent-primary)",
-              }}
-            >
-              <img
-                src={combo.content.fries.image}
-                alt=""
-                style={{ width: 32, height: 32, objectFit: "contain" }}
-              />
-              <span style={{ color: "var(--color-text-primary)", fontWeight: 700 }}>
-                {combo.content.fries.count > 1 ? `${combo.content.fries.count}x ` : ""}
-                {combo.content.fries.name}
-                <span
-                  style={{
-                    fontFamily: "var(--font-playful)",
-                    fontSize: "var(--text-xs)",
-                    color: "var(--color-accent-primary)",
-                    marginLeft: 8,
-                    letterSpacing: "0.1em",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  incluido
-                </span>
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-
-      <p style={{ color: "var(--color-text-secondary)", margin: 0 }}>
-        Ahora los toppings. ¡Todos gratis, elegí todos los que quieras!
-      </p>
-
-      <button
-        onClick={() => setPending({ ...pending, toppings: [] })}
-        style={{
-          alignSelf: "flex-start",
-          padding: "12px 24px",
-          borderRadius: "var(--radius-full)",
-          border: none
-            ? "2px solid var(--color-accent-primary)"
-            : "1px solid var(--color-border-subtle)",
-          background: none
-            ? "rgba(206,242,73,0.12)"
-            : "var(--color-bg-surface)",
-          color: "var(--color-text-primary)",
-          fontFamily: "var(--font-ui)",
-          fontWeight: 700,
-          cursor: "pointer",
-        }}
-      >
-        {none ? "✓ " : ""}No agregar toppings
-      </button>
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))",
-          gap: "var(--space-3)",
-        }}
-      >
-        {ORDER_TOPPINGS.map((t) => {
-          const active = pending.toppings.includes(t.id);
-          return (
-            <button
-              key={t.id}
-              onClick={() => toggle(t.id)}
-              style={{
-                border: active
-                  ? "3px solid var(--color-accent-primary)"
-                  : "1px solid var(--color-border-subtle)",
-                background: active ? "rgba(206,242,73,0.1)" : "var(--color-bg-surface)",
-                borderRadius: "var(--radius-card)",
-                padding: "var(--space-3)",
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "var(--space-2)",
-                color: "var(--color-text-primary)",
-                fontFamily: "var(--font-ui)",
-                fontWeight: 700,
-                fontSize: "var(--text-sm)",
-                textAlign: "left",
-              }}
-            >
-              <img
-                src={t.image}
-                alt=""
-                style={{
-                  width: 32,
-                  height: 32,
-                  objectFit: "contain",
-                  flexShrink: 0,
-                }}
-              />
-              <span style={{ flex: 1 }}>{t.name}</span>
-              {active && (
-                <span
-                  style={{
-                    color: "var(--color-accent-primary)",
-                    fontWeight: 900,
-                    fontSize: "var(--text-lg)",
-                  }}
-                >
-                  ✓
-                </span>
-              )}
-            </button>
-          );
-        })}
-      </div>
-
-      <FooterActions showBack onBack={back} nextLabel="Continuar →" onNext={next} />
     </>
   );
 }
@@ -1162,10 +1123,10 @@ function AnotherStep({
   isCombo: boolean;
 }) {
   const all = [...finishedHotDogs];
-  if (pending.variety) all.push(pending);
-  const total = all.reduce((acc, hd) => {
-    return acc + (hd.variety ? hd.variety.price * hd.quantity : 0);
-  }, 0);
+  if (pending.units.length > 0) all.push(pending);
+  const groupTotal = (hd: PendingHotDog) =>
+    hd.units.reduce((acc, u) => acc + u.variety.price, 0);
+  const total = all.reduce((acc, hd) => acc + groupTotal(hd), 0);
 
   const sauceName = (id: string) => ORDER_SAUCES.find((s) => s.id === id)?.name;
   const toppingName = (id: string) => ORDER_TOPPINGS.find((t) => t.id === id)?.name;
@@ -1202,66 +1163,79 @@ function AnotherStep({
               borderRadius: "var(--radius-card)",
               padding: "var(--space-4)",
               display: "flex",
-              gap: "var(--space-4)",
-              alignItems: "center",
+              flexDirection: "column",
+              gap: "var(--space-3)",
             }}
           >
-            <img
-              src={hd.variety?.image}
-              alt=""
-              style={{
-                width: 72,
-                height: 72,
-                objectFit: "contain",
-                flexShrink: 0,
-                filter: "drop-shadow(0 8px 12px rgba(0,0,0,0.5))",
-              }}
-            />
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
+            {groupUnits(hd.units).map((x, gi) => (
               <div
+                key={`${x.variety.id}-${gi}`}
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "var(--space-2)",
+                  gap: "var(--space-4)",
+                  alignItems: "flex-start",
+                  paddingBottom: "var(--space-2)",
+                  borderBottom: "1px dashed var(--color-border-subtle)",
                 }}
               >
-                <div
+                <img
+                  src={x.variety.image}
+                  alt=""
                   style={{
-                    fontFamily: "var(--font-display)",
-                    color: "var(--color-text-primary)",
-                    fontSize: "var(--text-lg)",
+                    width: 64,
+                    height: 64,
+                    objectFit: "contain",
+                    flexShrink: 0,
+                    filter: "drop-shadow(0 8px 12px rgba(0,0,0,0.5))",
                   }}
-                >
-                  {hd.quantity}x {hd.variety?.name}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    color: "var(--color-accent-primary)",
-                    fontSize: "var(--text-xl)",
-                  }}
-                >
-                  {hd.variety ? formatPrice(hd.variety.price * hd.quantity) : ""}
+                />
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 4 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "var(--space-2)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        color: "var(--color-text-primary)",
+                        fontSize: "var(--text-lg)",
+                      }}
+                    >
+                      {x.quantity}x {x.variety.name}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        color: "var(--color-accent-primary)",
+                        fontSize: "var(--text-xl)",
+                      }}
+                    >
+                      {formatPrice(x.variety.price * x.quantity)}
+                    </div>
+                  </div>
+                  <div style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
+                    <div>
+                      Salsas:{" "}
+                      <span style={{ color: "var(--color-text-primary)" }}>
+                        {x.sauces.length === 0 ? "Ninguna" : x.sauces.map(sauceName).join(", ")}
+                      </span>
+                    </div>
+                    <div>
+                      Toppings:{" "}
+                      <span style={{ color: "var(--color-text-primary)" }}>
+                        {x.toppings.length === 0
+                          ? "Ninguno"
+                          : x.toppings.map(toppingName).join(", ")}
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div style={{ fontSize: "var(--text-sm)", color: "var(--color-text-secondary)" }}>
-                <div>
-                  Salsas:{" "}
-                  <span style={{ color: "var(--color-text-primary)" }}>
-                    {hd.sauces.length === 0 ? "Ninguna" : hd.sauces.map(sauceName).join(", ")}
-                  </span>
-                </div>
-                <div>
-                  Toppings:{" "}
-                  <span style={{ color: "var(--color-text-primary)" }}>
-                    {hd.toppings.length === 0
-                      ? "Ninguno"
-                      : hd.toppings.map(toppingName).join(", ")}
-                  </span>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         ))}
       </div>
@@ -1272,7 +1246,7 @@ function AnotherStep({
           alignItems: "center",
           justifyContent: "space-between",
           padding: "var(--space-5)",
-          background: "var(--color-bg-panel)",
+          background: "var(--color-bg-surface)",
           borderRadius: "var(--radius-card)",
           border: "1px solid var(--color-border-subtle)",
         }}
@@ -1516,12 +1490,11 @@ function SummaryStep({
   confirmOrder: () => void;
 }) {
   const allHD = [...finishedHotDogs];
-  if (pending.variety && pending.quantity > 0) allHD.push(pending);
+  if (pending.units.length > 0) allHD.push(pending);
 
-  const hotDogsTotal = allHD.reduce(
-    (acc, hd) => acc + (hd.variety ? hd.variety.price * hd.quantity : 0),
-    0,
-  );
+  const groupTotal = (hd: PendingHotDog) =>
+    hd.units.reduce((acc, u) => acc + u.variety.price, 0);
+  const hotDogsTotal = allHD.reduce((acc, hd) => acc + groupTotal(hd), 0);
   const beveragesSubtotal = Object.entries(beveragesQty).reduce((acc, [id, q]) => {
     const bev = BEVERAGES.find((b) => b.id === id);
     return acc + (bev ? bev.price * q : 0);
@@ -1535,7 +1508,7 @@ function SummaryStep({
     return hotDogsTotal + beveragesSubtotal + friesPrice;
   }, [combo, hotDogsTotal, beveragesSubtotal, friesPrice]);
 
-  const totalHdCount = allHD.reduce((acc, hd) => acc + hd.quantity, 0);
+  const totalHdCount = allHD.reduce((acc, hd) => acc + hd.units.length, 0);
   const totalBevCount = Object.values(beveragesQty).reduce((a, b) => a + b, 0);
 
   const sauceName = (id: string) => ORDER_SAUCES.find((s) => s.id === id)?.name;
@@ -1572,58 +1545,73 @@ function SummaryStep({
               borderRadius: "var(--radius-card)",
               padding: "var(--space-4)",
               display: "flex",
-              gap: "var(--space-4)",
-              alignItems: "center",
+              flexDirection: "column",
+              gap: "var(--space-3)",
             }}
           >
-            <img
-              src={hd.variety?.image}
-              alt=""
-              style={{
-                width: 56,
-                height: 56,
-                objectFit: "contain",
-                flexShrink: 0,
-                filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.4))",
-              }}
-            />
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+            {groupUnits(hd.units).map((x, gi) => (
               <div
+                key={`${x.variety.id}-${gi}`}
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "var(--space-2)",
+                  gap: "var(--space-4)",
+                  alignItems: "flex-start",
+                  paddingBottom: "var(--space-2)",
+                  borderBottom: "1px dashed var(--color-border-subtle)",
                 }}
               >
-                <div
+                <img
+                  src={x.variety.image}
+                  alt=""
                   style={{
-                    fontFamily: "var(--font-display)",
-                    color: "var(--color-text-primary)",
-                    fontSize: "var(--text-base)",
+                    width: 56,
+                    height: 56,
+                    objectFit: "contain",
+                    flexShrink: 0,
+                    filter: "drop-shadow(0 6px 10px rgba(0,0,0,0.4))",
                   }}
-                >
-                  {hd.quantity}x {hd.variety?.name}
-                </div>
-                <div
-                  style={{
-                    fontFamily: "var(--font-display)",
-                    color: "var(--color-accent-primary)",
-                    fontSize: "var(--text-lg)",
-                  }}
-                >
-                  {hd.variety ? formatPrice(hd.variety.price * hd.quantity) : ""}
+                />
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      gap: "var(--space-2)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        color: "var(--color-text-primary)",
+                        fontSize: "var(--text-base)",
+                      }}
+                    >
+                      {x.quantity}x {x.variety.name}
+                    </div>
+                    <div
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        color: "var(--color-accent-primary)",
+                        fontSize: "var(--text-lg)",
+                      }}
+                    >
+                      {formatPrice(x.variety.price * x.quantity)}
+                    </div>
+                  </div>
+                  {(x.sauces.length > 0 || x.toppings.length > 0) && (
+                    <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)" }}>
+                      {x.sauces.length > 0 && (
+                        <div>Salsas: {x.sauces.map(sauceName).join(", ")}</div>
+                      )}
+                      {x.toppings.length > 0 && (
+                        <div>Toppings: {x.toppings.map(toppingName).join(", ")}</div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
-              <div style={{ fontSize: "var(--text-xs)", color: "var(--color-text-secondary)" }}>
-                {hd.sauces.length > 0 && (
-                  <div>Salsas: {hd.sauces.map(sauceName).join(", ")}</div>
-                )}
-                {hd.toppings.length > 0 && (
-                  <div>Toppings: {hd.toppings.map(toppingName).join(", ")}</div>
-                )}
-              </div>
-            </div>
+            ))}
           </div>
         ))}
 
@@ -1808,7 +1796,7 @@ function FooterActions({
           <button
             onClick={onBack}
             style={{
-              background: "var(--color-bg-panel)",
+              background: "var(--color-bg-surface)",
               color: "var(--color-text-secondary)",
               border: "1px solid var(--color-border-subtle)",
               borderRadius: "var(--radius-full)",
